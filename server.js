@@ -18,6 +18,7 @@ require('./config/passport')(passport)
 // Routes
 app.use('/api/', apiRoute)
 
+// if app is not an api route then check if file is in client build
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'))
 
