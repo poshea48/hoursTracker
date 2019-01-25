@@ -1,0 +1,211 @@
+/* #root {
+  min-height: 100vh;
+} */
+.App {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.app-content {
+  flex: 1 auto;
+}
+
+.container {
+
+}
+
+a {
+  text-decoration: none;
+}
+
+.landing {
+  position: relative;
+  /* background: url('./img/showcase.jpg') no-repeat; */
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  margin-top: -24px;
+  margin-bottom: -50px;
+}
+
+.landing-inner {
+  padding-top: 80px;
+}
+
+.dark-overlay {
+  /* background-color: rgba(0, 0, 0, 0.7); */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.landing-links {
+  /* justify-content: space-around !important; */
+  margin: 0 !important;
+}
+.main-title {
+  flex-direction: column !important;
+}
+.row-item {
+  text-align: center;
+}
+
+.main {
+  flex: 1;
+}
+
+.navbar {
+  display: flex;
+  background-color: #343a40;
+  color: #fff;
+  justify-content: space-between;
+}
+
+.auth-button {
+  cursor: pointer;
+  border-radius: 5px;
+  color: #fff;
+  background: #343a40;
+}
+
+.footer {
+  height: 50px;
+  background-color: #343a40;
+  margin-top: 50px;
+}
+
+.nav-item {
+  width: 20%;
+  align-self: center;
+  margin: 15px 0;
+  margin-left: 1em;
+}
+
+.auth {
+  width: 30%;
+}
+
+.auth ul {
+  display: flex;
+  list-style: none;
+  justify-content: flex-end;
+  padding: 0;
+  margin: 0;
+}
+
+.auth li {
+  margin-right: 2em;
+}
+.header {
+  justify-content: center;
+}
+
+.history-layout {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 10px auto;
+}
+
+.history-layout:first-child {
+  border-right: 1px solid #afafac;
+
+}
+
+.compare {
+  text-align: center;
+}
+
+.heading {
+  color: rgba(7,27,82,1)
+}
+
+.actions {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.button {
+  cursor: pointer;
+  /* background-color: #42f4c2; */
+  background-color: #06db6d;
+  /* background-color: #3befc9; */
+  border: 1px solid black;
+  width: 10em;
+  padding: .6em;
+  border-radius: 10px;
+  transition: all .3s ease-in-out;
+  margin: .2em 0;
+}
+
+.button:hover {
+  transform: scale(1.1);
+  opacity: 2;
+  font: 2em;
+}
+
+.button:disabled {
+  background: #e7040f;
+  border: 1px solid #e7040f;
+  opacity: .6;
+  transition: none;
+  transform: none;
+  cursor: default;
+}
+
+.history {
+  margin: 20px 2em;
+}
+
+.chart {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.chart-content {
+  position: relative;
+  max-width: 800px;
+  height: 200px;
+  background: #ddd;
+}
+
+@media only screen and (max-width: 670px) {
+  .actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .button {
+    width: 8em;
+    margin: 5px;
+  }
+
+}
+
+@media only screen and (max-width: 560px) {
+  .actions {
+    justify-content: center;
+  }
+
+  .button {
+    margin: 2px;
+    width: 6em;
+  }
+
+  .auth {
+    width: 70%;
+  }
+
+}

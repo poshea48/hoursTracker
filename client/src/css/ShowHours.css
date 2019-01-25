@@ -1,0 +1,27 @@
+.progress-circular {
+  font-size: 1.2em;
+  color: #993b3b;
+  margin: .5em 1em;
+}
+
+h3 {
+  /* color: #e00df4; */
+  margin-bottom: .4em;
+}
+
+.progress-container {
+  display: flex;
+  /* background-color: #afafac; */
+  height: 10em;
+  width: 10em;
+  border-radius: 50%;
+  border: 1em solid #afafac;
+}
+
+.progress-bar {
+  border-radius: 50%;
+  width: 0;
+  align-items: center;
+  color: #ddf40e;
+  padding: .2em .4em;
+}

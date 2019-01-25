@@ -1,0 +1,33 @@
+.nav-history-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 50px 0;
+}
+
+.nav-history {
+  width: 70%;
+  max-width: 500px;
+  display: flex;
+  height: 40px;
+  padding: 10px;
+  background: #343a40;
+  color: #fff;
+  justify-content: space-between;
+  border-radius: 20px;
+}
+
+.nav-history h4 {
+  width: 80%;
+  margin: 0 0 0 1em;
+}
+
+.nav-history p {
+  width: 20%;
+  margin: 0;
+  align-self: center;
+}
+
+.chart-dropdown {
+  width: 85px;
+  background: #b2e1ff;
+}
