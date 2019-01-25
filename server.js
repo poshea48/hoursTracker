@@ -5,6 +5,11 @@ const app = express();
 const passport = require('passport')
 const PORT = process.env.PORT || 5000;
 
+// HTTPS Redirect for node on heroku
+// app.configure('production' => {
+//
+// })
+
 // middleware telling system
 app.use(parser.urlencoded({extended: true}));
 app.use(parser.json())
@@ -20,6 +25,13 @@ app.use('/api/', apiRoute)
 
 // if app is not an api route then check if file is in client build
 if (process.env.NODE_ENV === 'production') {
+  app.use((req, res, next) => {
+    if (req.header('x-forwarded-proto') !== 'https') {
+      res.redirect(`https://${req.header('host')}${req.url}`)
+    } else {
+      next()
+    }
+  })
   app.use(express.static('client/build'))
 
   const path = require('path');
