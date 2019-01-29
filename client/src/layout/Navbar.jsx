@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { logoutUser } from '../redux/actions/authActions';
 // import getTodaysDate from '../common/getTodaysDate';
 
 class Navbar extends Component {

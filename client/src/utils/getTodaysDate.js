@@ -5,3 +5,5 @@ const getTodaysDate = () => {
 }
 
 export default getTodaysDate;
+
+// new Date("2011-09-24T00:00:00".replace(/-/g, '\/').replace(/T.+/, ''));

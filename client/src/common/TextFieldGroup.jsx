@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import classnames from 'classnames'
 
 class TextFieldGroup extends Component {
   render () {
-    const { name, placeholder, value, label, error, info, type, onChange, disabled} = this.props
+    const { name, placeholder, value, error, type, onChange, disabled} = this.props
     return (
       <div className="form-group">
         <input

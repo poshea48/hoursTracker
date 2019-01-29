@@ -11,11 +11,15 @@ import LogButton from '../buttons/LogButton';
 import Navbar from './Navbar'
 import Graph from '../charts/Graph';
 import NavHistory from './NavHistory';
-import { getDailyChart } from '../redux/actions/chartActions'
+import { getDailyChart, updateTodaysData } from '../redux/actions/chartActions'
 import { startTimer, stopTimer, resetTimer, logHours, updateTimer } from '../redux/actions/timerActions';
 import { logoutUser } from '../redux/actions/authActions'
 
 class MainPage extends Component {
+  constructor(props) {
+    super(props);
+    props.updateTimer(this.getDataFromLocal())
+  }
   onLogoutClick = e => {
     e.preventDefault();
     ['hoursToday', 'startTime', 'dateToday'].forEach(i => localStorage.removeItem(i))
@@ -55,9 +59,8 @@ class MainPage extends Component {
   handleLogClick = () => {
     // hook up to data base
     const { hoursToday, dbToday, dateToday } = this.props.timer
-    let hours = Math.abs(hoursToday - dbToday)
     localStorage.setItem('hoursToday', 0)
-    this.props.logHours(hours, dateToday)
+    this.props.logHours(hoursToday, dateToday)
   }
 
   getDataFromLocal = () => {
@@ -73,28 +76,25 @@ class MainPage extends Component {
       localStorage.setItem('startTime', '0')
     }
     const { dateToday, hoursToday, startTime } = localStorage
-    if (!hoursToday) {
-      hoursToday = 0
-    }
+
 
     return { dateToday, hoursToday, startTime }
   }
 
   componentDidMount() {
-    const { dbChecked } = this.props.timer
-    this.props.updateTimer(this.getDataFromLocal(), dbChecked)
-    this.props.getDailyChart(this.props.timer.hoursToday)
+    const localHoursToday = Number(localStorage.getItem('hoursToday'))
+    if (localHoursToday > this.props.timer.hoursToday) {
+      this.props.getDailyChart(localHoursToday)
+    } else {
+      this.props.getDailyChart(this.props.timer.hoursToday)
+    }
   }
 
   // Check is hoursToday in timer object changed, if so then update daily chart
   // After reset and log hours dbCheck is set to false, returns updated chart with logged hours
   componentDidUpdate(prevProps) {
-    if (prevProps.timer.hoursToday !== this.props.timer.hoursToday) {
+    if (prevProps.timer.hoursToday !== this.props.timer.hoursToday && this.props.chart.chartType === 'daily') {
       this.props.getDailyChart(this.props.timer.hoursToday)
-    }
-    const { dbChecked } = this.props.timer
-    if (!dbChecked) {
-      this.props.updateTimer(this.getDataFromLocal(), dbChecked)
     }
   }
 
@@ -127,6 +127,7 @@ class MainPage extends Component {
 
 MainPage.propTypes = {
   getDailyChart: PropTypes.func.isRequired,
+  updateTodaysData: PropTypes.func.isRequired,
   updateTimer: PropTypes.func.isRequired,
   startTimer: PropTypes.func.isRequired,
   stopTimer: PropTypes.func.isRequired,
@@ -146,4 +147,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, { getDailyChart, startTimer, stopTimer, resetTimer, logHours, updateTimer, logoutUser })(MainPage);
+export default connect(mapStateToProps, { getDailyChart, updateTodaysData, startTimer, stopTimer, resetTimer, logHours, updateTimer, logoutUser })(MainPage);

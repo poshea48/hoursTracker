@@ -1,4 +1,4 @@
-import { START_TIMER, STOP_TIMER, RESET_TIMER, LOG_HOURS, UPDATE_TIMER } from '../actions/types'
+import { START_TIMER, STOP_TIMER, RESET_TIMER, UPDATE_TIMER } from '../actions/types'
 import getTodaysDate from '../../utils/getTodaysDate';
 
 const initialState = {
@@ -6,8 +6,6 @@ const initialState = {
   hoursToday: 0,//Number(localStorage.getItem('hoursToday')) || 0,
   startTime: 0,
   forceLog: false,
-  dbToday: 0,
-  dbChecked: false,
   disabled: {
     start: false,
     stop: true,
@@ -75,8 +73,6 @@ export default (state = initialState, action) => {
         ...state,
         hoursToday: 0,
         startTime: 0,
-        dbChecked: false,
-        dbToday: 0,
         disabled: {
           start: false,
           stop: true,
@@ -85,20 +81,6 @@ export default (state = initialState, action) => {
         }
       }
 
-    case LOG_HOURS:
-      return {
-        ...state,
-        hoursToday: 0,
-        startTime: 0,
-        dbChecked: false,
-        dbToday: 0,
-        disabled: {
-          start: false,
-          stop: true,
-          reset: true,
-          log: true
-        }
-      }
     default:
       return state
   }

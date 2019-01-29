@@ -10,28 +10,24 @@ router.get('/', (req, res) => {
   .catch(err => console.log(err))
 })
 
-router.get(
-  '/today',
-  passport.authenticate('jwt', { session: false }),
-  (req, res) => {
-    db.select('hrs_worked as hours').from('logged_work')
-      .where({
-        log_day: 'current_date',
-        user_id: req.user.id
-      })
-      // .whereRaw('log_day = current_date and id = ')
-      .then(data => res.json(data[0]))
-      .catch(err => console.log(err))
-})
+// router.get(
+//   '/today',
+//   passport.authenticate('jwt', { session: false }),
+//   (req, res) => {
+//     db.select('hrs_worked as hours').from('logged_work')
+//       .whereRaw(`user_id = ${req.user.id} and log_day = current_date`)
+//       // .whereRaw('log_day = current_date and id = ')
+//       .then(data => res.json(data[0]))
+//       .catch(err => console.log(err))
+// })
 
 router.get(
   '/daily',
   passport.authenticate('jwt', { session: false }),
  (req, res) => {
-    console.log(req.user)
     db.raw(`select series as period,
       coalesce(hrs_worked, 0) as hours from
-      generate_series(date_trunc('week', CURRENT_TIMESTAMP), CURRENT_TIMESTAMP, '1 day'::interval) as series
+      generate_series(date_trunc('week', current_date), current_date, '1 day'::interval) as series
       left join logged_work on logged_work.user_id = ${req.user.id} and logged_work.log_day = series group by 1, 2 order by 1`)
       .then(data => res.send(data.rows))
       .catch(err => console.log(err))

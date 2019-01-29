@@ -22,9 +22,12 @@ class XContent extends Component {
 
   getDayName = (date) => {
     const DAILY = ['Sun', 'Mon', 'Tues', 'Wed', 'Thr', 'Fri', 'Sat']
+    let normalizedDate = new Date(date.replace(/-/g, '\/').replace(/T.+/, '')).toDateString()
     let day;
-    if (date === 'Today') {
-      day = date
+    const today = new Date().toDateString()
+
+    if (normalizedDate === today) {
+      day = 'Today'
     } else {
       day = DAILY[new Date(date).getUTCDay()]
     }

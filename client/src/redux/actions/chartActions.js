@@ -5,22 +5,33 @@ export const getDailyChart = (hoursToday) => dispatch => {
   dispatch(setChartLoading())
   axios
     .get('/api/hours/daily')
+
     .then(res => {
-      let data = [...res.data]
-      data[data.length - 1] = {period: 'Today', hours: hoursToday}
+      const dailyData = [...res.data]
+      console.log(dailyData)
+      dailyData[dailyData.length - 1].hours += hoursToday
       return dispatch({
         type: GET_DAILY,
-        payload: data
+        payload: res.data
       })
     }
-
     )
     .catch(err =>
       dispatch({
         type: GET_DAILY,
-        payload: null
+        payload: {}
       })
     )
+}
+
+export const updateTodaysData = (data, hoursToday) => dispatch => {
+  console.log(data)
+  const newData = [...data]
+  newData[newData.length - 1].hours = hoursToday
+  dispatch({
+    type: GET_DAILY,
+    payload: newData
+  })
 }
 
 // export const addToday = (hours) => dispatch => {

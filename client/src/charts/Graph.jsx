@@ -1,19 +1,23 @@
 import React, { Component } from 'react'
 import '../css/Graph.css';
-import YContent from './YContent'
 import Bar from './Bar';
 import XContent from './XContent';
+import YContent from './YContent'
 
 class Graph extends Component {
-  renderBars = (data, chartType) => {
+  renderBars = (data, chartType, hoursToday) => {
     let size = data.length - 1
     return data.map((datum, i, self) => {
       let color;
-      if (i === size ) {
+      if (i === size && chartType === 'daily') {
+        color = '#06db6d'
+        // datum.hours = hoursToday
+      } else if (i === size) {
         color = '#06db6d'
       } else {
         color = '#582a75'
       }
+
       return (
         <Bar
           bottom={i * 10}
@@ -39,7 +43,7 @@ class Graph extends Component {
   }
 
   render () {
-    const { data, chartType } = this.props
+    const { data, chartType, hoursToday } = this.props
 
     return (
       <div className="graph-wrapper">
@@ -52,7 +56,7 @@ class Graph extends Component {
               <div className="line"></div>
               <div className="line"></div>
             </div>
-            {this.renderBars(data, chartType)}
+            {this.renderBars(data, chartType, hoursToday)}
 
           </div>
         </div>

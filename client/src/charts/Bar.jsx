@@ -14,22 +14,30 @@ class Bar extends Component {
     this.setState({ isHovering: !this.state.isHovering})
   }
 
+  handleBarClick = (e) => {
+    const barContent = e.target.previousSibling
+    const isMobile = window.innerWidth < 480;
+
+    if (isMobile) {
+      barContent.style.display = "block"
+      setTimeout(() => barContent.style.display = "none", 2000)
+    }
+
+  }
+
   render () {
     const { height, scale, color } = this.props
     return (
       <div className="bar">
-        { this.state.isHovering && (
-          <div className="hover-hours">
-            {convertHoursToTime(height)}
-          </div>
-        )}
         <div className="bar-content">
+          {convertHoursToTime(height)}
+        </div>
+        <div className="hover-hours">
           {convertHoursToTime(height)}
         </div>
         <div
           className="hours"
-          onMouseEnter={this.handleMouseHover}
-          onMouseLeave={this.handleMouseHover}
+          onClick={this.handleBarClick}
           style={{height: `${height * scale}px`, background: `${color}`}}
         >
         </div>

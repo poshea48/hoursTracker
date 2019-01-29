@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { START_TIMER, STOP_TIMER, RESET_TIMER, LOG_HOURS, UPDATE_TIMER } from './types'
+import { START_TIMER, STOP_TIMER, RESET_TIMER, UPDATE_TIMER } from './types'
 
 export const startTimer = () => dispatch => {
   dispatch({
@@ -15,34 +15,37 @@ export const stopTimer = (hoursToday) => dispatch => {
   })
 }
 
-export const updateTimer = ({hoursToday, dateToday, startTime}, dbChecked ) => dispatch => {
+export const updateTimer = ({hoursToday, dateToday, startTime} ) => dispatch => {
   hoursToday = Number(hoursToday)
   startTime = Number(startTime)
-  console.log(dateToday)
-  let dbToday;
-  if (dbChecked) {
+  // return dispatch({
+  //   type: UPDATE_TIMER,
+  //   payload: { dateToday, hoursToday: hoursToday, startTime }
+  // })
     return dispatch({
       type: UPDATE_TIMER,
-      payload: { dateToday, hoursToday: hoursToday, startTime: Number(startTime), dbChecked}
+      payload: { dateToday, hoursToday, startTime }
     })
-  } else {
-    axios.get('api/hours/today')
-      .then(res => {
-        if (res.data.hours) {
-          dbToday = res.data.hours
-          hoursToday += res.data.hours
-        } else {
-          dbToday = 0
-        }
-        dbChecked = true
-
-        return dispatch({
-          type: UPDATE_TIMER,
-          payload: { dateToday, hoursToday: hoursToday, startTime: Number(startTime), dbChecked, dbToday}
-        })
-      })
-      .catch(err => console.log(err))
-  }
+  // } else {
+  //   axios.get('api/hours/today')
+  //     .then(res => {
+  //       if (res.data.hours) {
+  //         dbToday = res.data.hours
+  //         hoursToday += res.data.hours
+  //         localStorage.setItem('hoursToday', hoursToday)
+  //         localStorage.setItem('dbToday', true)
+  //       } else {
+  //         dbToday = 0
+  //       }
+  //       dbChecked = true
+  //
+  //       return dispatch({
+  //         type: UPDATE_TIMER,
+  //         payload: { dateToday, hoursToday: hoursToday, startTime: Number(startTime), dbChecked, dbToday}
+  //       })
+  //     })
+  //     .catch(err => console.log(err))
+  // }
 
 }
 
