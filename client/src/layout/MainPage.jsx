@@ -22,6 +22,10 @@ class MainPage extends Component {
   }
   onLogoutClick = e => {
     e.preventDefault();
+    const { hoursToday } = this.props.timer
+    if (hoursToday > 0) {
+      this.props.logHours(hoursToday)
+    }
     ['hoursToday', 'startTime', 'dateToday'].forEach(i => localStorage.removeItem(i))
     console.log("should be logging out")
     this.props.logoutUser()
