@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import normalizeDateFromDb from '../utils/normalizeDateFromDb'
 import '../css/XContent.css';
 
 class XContent extends Component {
@@ -22,7 +23,7 @@ class XContent extends Component {
 
   getDayName = (date) => {
     const DAILY = ['Sun', 'Mon', 'Tues', 'Wed', 'Thr', 'Fri', 'Sat']
-    let normalizedDate = new Date(date.replace(/-/g, '\/').replace(/T.+/, '')).toDateString()
+    let normalizedDate = normalizeDateFromDb(date)
     let day;
     const today = new Date().toDateString()
 

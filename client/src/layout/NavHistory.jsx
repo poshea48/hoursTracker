@@ -12,7 +12,8 @@ class NavHistory extends Component {
     } else if (e.target.value === 'monthly') {
       this.props.getMonthlyChart()
     } else {
-      this.props.getDailyChart(this.props.timer.hoursToday)
+      const { hoursToday, dateToday } = this.props.timer 
+      this.props.getDailyChart(hoursToday, dateToday)
     }
   }
 

@@ -55,7 +55,8 @@ export const resetTimer = () => dispatch => {
   })
 }
 
-export const logHours = (hours, date) => dispatch => {
+export const logHours = (hours, addedHours, date) => dispatch => {
+  hours += addedHours
   axios
     .post('/api/hours/log-hours', {hours, date})
     .then(res =>

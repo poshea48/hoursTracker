@@ -18,6 +18,7 @@ import { logoutUser } from '../redux/actions/authActions'
 class MainPage extends Component {
   constructor(props) {
     super(props);
+    console.log('initializing')
     props.updateTimer(this.getDataFromLocal())
   }
   onLogoutClick = e => {
@@ -62,9 +63,16 @@ class MainPage extends Component {
 
   handleLogClick = () => {
     // hook up to data base
-    const { hoursToday, dbToday, dateToday } = this.props.timer
+    const { hoursToday, dateToday, startTime } = this.props.timer
+    let addedHours = 0
+    if (startTime > 0) {
+      addedHours = (new Date().getTime() - startTime)
+    }
     localStorage.setItem('hoursToday', 0)
-    this.props.logHours(hoursToday, dateToday)
+    localStorage.setItem('dateToday', '')
+    localStorage.setItem('startTime', 0)
+
+    this.props.logHours(hoursToday, addedHours, dateToday)
   }
 
   getDataFromLocal = () => {
@@ -81,24 +89,28 @@ class MainPage extends Component {
     }
     const { dateToday, hoursToday, startTime } = localStorage
 
-
     return { dateToday, hoursToday, startTime }
   }
 
   componentDidMount() {
+    console.log('mounting')
     const localHoursToday = Number(localStorage.getItem('hoursToday'))
+    const dateToday = this.props.timer.dateToday || localStorage.getItem('dateToday')
     if (localHoursToday > this.props.timer.hoursToday) {
-      this.props.getDailyChart(localHoursToday)
+      this.props.getDailyChart(localHoursToday, dateToday)
     } else {
-      this.props.getDailyChart(this.props.timer.hoursToday)
+      this.props.getDailyChart(this.props.timer.hoursToday, dateToday)
     }
   }
 
   // Check is hoursToday in timer object changed, if so then update daily chart
   // After reset and log hours dbCheck is set to false, returns updated chart with logged hours
   componentDidUpdate(prevProps) {
+    console.log('updating')
     if (prevProps.timer.hoursToday !== this.props.timer.hoursToday && this.props.chart.chartType === 'daily') {
-      this.props.getDailyChart(this.props.timer.hoursToday)
+      const {hoursToday, dateToday} = this.props.timer
+      console.log(dateToday)
+      this.props.getDailyChart(hoursToday, dateToday)
     }
   }
 

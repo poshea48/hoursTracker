@@ -1,10 +1,16 @@
 import axios from 'axios';
 import { GET_DAILY, GET_WEEKLY, GET_MONTHLY, CHART_LOADING } from './types'
+import getDateForDb from '../../utils/getDateForDb'
 
-export const getDailyChart = (hoursToday) => dispatch => {
+export const getDailyChart = (hoursToday, dateToday) => dispatch => {
   dispatch(setChartLoading())
+  const date = getDateForDb(dateToday)
   axios
-    .get('/api/hours/daily')
+    .get(`/api/hours/daily`, {
+      params: {
+        today: date
+      }
+    })
 
     .then(res => {
       const dailyData = [...res.data]

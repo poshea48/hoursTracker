@@ -71,8 +71,10 @@ export default (state = initialState, action) => {
     case RESET_TIMER:
       return {
         ...state,
+        dateToday: '',
         hoursToday: 0,
         startTime: 0,
+        forceLog: false,
         disabled: {
           start: false,
           stop: true,

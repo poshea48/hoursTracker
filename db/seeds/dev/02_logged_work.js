@@ -24,6 +24,17 @@ exports.seed = function(knex, Promise) {
         {user_id: 1, log_day: '2019-01-20', hrs_worked: 0.363},
         {user_id: 1, log_day: '2019-01-21', hrs_worked: 5.93},
         {user_id: 1, log_day: '2019-01-22', hrs_worked: 8.662},
+        {user_id: 1, log_day: '2019-01-23', hrs_worked: 7.281},
+        {user_id: 1, log_day: '2019-01-24', hrs_worked: 10.055},
+        {user_id: 1, log_day: '2019-01-25', hrs_worked: 3.367},
+        {user_id: 1, log_day: '2019-01-26', hrs_worked: 4.523},
+        {user_id: 1, log_day: '2019-01-28', hrs_worked: 7.505},
+        {user_id: 1, log_day: '2019-01-29', hrs_worked: 5.97},
+        {user_id: 1, log_day: '2019-01-30', hrs_worked: 6.644},
+        {user_id: 1, log_day: '2019-01-31', hrs_worked: 6.761},
+        {user_id: 1, log_day: '2019-02-01', hrs_worked: 1.923},
+        {user_id: 1, log_day: '2019-02-04', hrs_worked: 6.24},
+
       ]);
     });
 };

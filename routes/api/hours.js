@@ -25,9 +25,10 @@ router.get(
   '/daily',
   passport.authenticate('jwt', { session: false }),
  (req, res) => {
+   let date = req.query.today
     db.raw(`select series as period,
       coalesce(hrs_worked, 0) as hours from
-      generate_series(date_trunc('week', current_date), current_date, '1 day'::interval) as series
+      generate_series(date_trunc('week', date '${date}'), date '${date}', '1 day'::interval) as series
       left join logged_work on logged_work.user_id = ${req.user.id} and logged_work.log_day = series group by 1, 2 order by 1`)
       .then(data => res.send(data.rows))
       .catch(err => console.log(err))
