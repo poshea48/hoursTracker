@@ -101,6 +101,7 @@ class MainPage extends Component {
   componentDidMount() {
     console.log("mounting");
     const localData = this.getDataFromLocal();
+    console.log(localData.dateToday);
     this.props.getDailyChart(localData.hoursToday, localData.dateToday);
     this.props.updateTimer(localData);
   }
@@ -110,8 +111,9 @@ class MainPage extends Component {
   componentDidUpdate(prevProps) {
     console.log("updating");
 
-    if (!this.props.timer) {
+    if (!this.props.timer.dateToday) {
       const localData = this.getDataFromLocal();
+      console.log(localData);
       this.props.getDailyChart(localData.hoursToday, localData.dateToday);
       this.props.updateTimer(localData);
     }

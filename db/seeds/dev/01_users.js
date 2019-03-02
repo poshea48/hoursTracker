@@ -1,29 +1,29 @@
-const bcrypt = require('bcryptjs');
+const bcrypt = require("bcryptjs");
 let paul = {
-  name: 'Paul OShea',
-  email: 'poshea48@msn.com',
-  password_digest: 'thewolf'
-}
+  name: "Paul OShea",
+  email: "poshea48@msn.com",
+  password_digest: "thewolf"
+};
 
 let abigail = {
-  name: 'Abigail Machernis',
-  email: 'abigailmachernis@gmail.com',
-  password_digest: 'thegailface'
-}
+  name: "Abigail Machernis",
+  email: "abigailmachernis@gmail.com",
+  password_digest: "thegailface"
+};
 
 bcrypt.genSalt(10, (err, salt) => {
   bcrypt.hash(paul.password_digest, salt, (err, hash) => {
     if (err) throw err;
-    paul.password_digest = hash
-  })
-})
+    paul.password_digest = hash;
+  });
+});
 
 bcrypt.genSalt(10, (err, salt) => {
   bcrypt.hash(abigail.password_digest, salt, (err, hash) => {
     if (err) throw err;
-    abigail.password_digest = hash
-  })
-})
+    abigail.password_digest = hash;
+  });
+});
 
 // bcrypt.genSalt(10, (err, salt) => {
 //   bcrypt.hash(newUser.password_digest, salt, (err, hash) => {
@@ -34,12 +34,10 @@ bcrypt.genSalt(10, (err, salt) => {
 
 exports.seed = function(knex, Promise) {
   // Deletes ALL existing entries
-  return knex('users').del()
-    .then(function () {
+  return knex("users")
+    .del()
+    .then(function() {
       // Inserts seed entries
-      return knex('users').insert([
-        paul,
-        abigail
-      ]);
+      return knex("users").insert([paul, abigail]);
     });
 };

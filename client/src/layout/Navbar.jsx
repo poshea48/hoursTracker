@@ -1,16 +1,14 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
 // import getTodaysDate from '../common/getTodaysDate';
 
 class Navbar extends Component {
-  render () {
-    const { onLogoutClick, auth } = this.props
+  render() {
+    const { onLogoutClick, auth } = this.props;
     const authLinks = auth.isAuthenticated ? (
       <div className="nav-item auth">
         <ul>
           <li>
-            <button
-              className="auth-button"
-              onClick={onLogoutClick}>
+            <button className="auth-button" onClick={onLogoutClick}>
               Log Out
             </button>
           </li>
@@ -23,16 +21,15 @@ class Navbar extends Component {
           <li>Register</li>
         </ul>
       </div>
-    )
+    );
     return (
       <div className="navbar">
         <div className="nav-item">
-          <h5 style={{margin: 0}}>{auth.user.name}</h5>
+          <h5 style={{ margin: 0 }}>{auth.user.name}</h5>
         </div>
         {authLinks}
       </div>
-
-    )
+    );
   }
 }
 
