@@ -22,34 +22,11 @@ export const updateTimer = ({
 }) => dispatch => {
   hoursToday = Number(hoursToday);
   startTime = Number(startTime);
-  // return dispatch({
-  //   type: UPDATE_TIMER,
-  //   payload: { dateToday, hoursToday: hoursToday, startTime }
-  // })
+
   return dispatch({
     type: UPDATE_TIMER,
     payload: { dateToday, hoursToday, startTime }
   });
-  // } else {
-  //   axios.get('api/hours/today')
-  //     .then(res => {
-  //       if (res.data.hours) {
-  //         dbToday = res.data.hours
-  //         hoursToday += res.data.hours
-  //         localStorage.setItem('hoursToday', hoursToday)
-  //         localStorage.setItem('dbToday', true)
-  //       } else {
-  //         dbToday = 0
-  //       }
-  //       dbChecked = true
-  //
-  //       return dispatch({
-  //         type: UPDATE_TIMER,
-  //         payload: { dateToday, hoursToday: hoursToday, startTime: Number(startTime), dbChecked, dbToday}
-  //       })
-  //     })
-  //     .catch(err => console.log(err))
-  // }
 };
 
 export const resetTimer = () => dispatch => {

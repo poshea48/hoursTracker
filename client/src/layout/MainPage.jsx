@@ -20,6 +20,9 @@ import {
   updateTimer
 } from "../redux/actions/timerActions";
 import { logoutUser } from "../redux/actions/authActions";
+import axios from "axios";
+
+import jwt_decode from "jwt-decode";
 
 class MainPage extends Component {
   onLogoutClick = e => {
@@ -101,7 +104,10 @@ class MainPage extends Component {
   componentDidMount() {
     console.log("mounting");
     const localData = this.getDataFromLocal();
-    console.log(localData.dateToday);
+    // Archive hours
+    // if (new Date(localData.dateToday).getDate() === 6) {
+    //   axios.post("api/hours/archive-hours");
+    // }
     this.props.getDailyChart(localData.hoursToday, localData.dateToday);
     this.props.updateTimer(localData);
   }
@@ -115,18 +121,28 @@ class MainPage extends Component {
       const localData = this.getDataFromLocal();
       console.log(localData);
       this.props.getDailyChart(localData.hoursToday, localData.dateToday);
-      this.props.updateTimer(localData);
+      return this.props.updateTimer(localData);
     }
     if (
       prevProps.timer.hoursToday !== this.props.timer.hoursToday &&
       this.props.chart.chartType === "daily"
     ) {
       const { hoursToday, dateToday } = this.props.timer;
-      this.props.getDailyChart(hoursToday, dateToday);
+      return this.props.getDailyChart(hoursToday, dateToday);
     }
   }
 
   render() {
+    const decoded = jwt_decode(localStorage.jwtTokenHoursTracker);
+    const currentTime = Date.now() / 1000;
+    if (decoded.exp < currentTime) {
+      // const { hoursToday, dateToday } = store.getState().timer;
+
+      // if (hoursToday > 0) {
+      //   store.dispatch(logHours(hoursToday, dateToday));
+      // }
+      this.props.logoutUser();
+    }
     const { start, stop, reset, log } = this.props.timer.disabled;
     const { chartType, data, loading } = this.props.chart;
     return (
@@ -141,7 +157,7 @@ class MainPage extends Component {
             <LogButton disabled={log} logHours={this.handleLogClick} />
           </div>
           <NavHistory chartType={chartType} />
-          {loading ? (
+          {loading || typeof data === "undefined " ? (
             <Spinner />
           ) : (
             <div className="chart">

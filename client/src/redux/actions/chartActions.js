@@ -51,7 +51,7 @@ export const getWeeklyChart = () => dispatch => {
     .then(res =>
       dispatch({
         type: GET_WEEKLY,
-        payload: res.data
+        payload: res.data.slice(Math.max(res.data.length - 5, 1))
       })
     )
     .catch(err =>
