@@ -43,7 +43,7 @@ bcrypt.genSalt(10, (err, salt) => {
 exports.seed = function(knex, Promise) {
   // Deletes ALL existing entries
   return knex("users")
-    .truncate()
+    .del()
     .then(function() {
       // Inserts seed entries
       return knex("users").insert([paul, abigail, sample]);

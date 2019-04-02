@@ -14,13 +14,21 @@ exports.up = function(knex, Promise) {
     })
     .createTable("logged_work", table => {
       table.increments("id").primary();
-      table.integer("user_id").references("users.id");
+      table
+        .integer("user_id")
+        .references("users.id")
+        .inTable("users")
+        .onDelete("CASCADE");
       table.float("hrs_worked");
       table.date("log_day").defaultTo(knex.fn.now());
     })
     .createTable("archive_months", table => {
       table.increments();
-      table.integer("user_id").references("users.id");
+      table
+        .integer("user_id")
+        .references("users.id")
+        .inTable("users")
+        .onDelete("CASCADE");
       table.integer("month");
       table.integer("year");
       table.float("hrs_worked");
