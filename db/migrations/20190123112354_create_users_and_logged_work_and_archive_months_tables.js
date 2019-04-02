@@ -17,7 +17,6 @@ exports.up = function(knex, Promise) {
       table
         .integer("user_id")
         .references("users.id")
-        .inTable("users")
         .onDelete("CASCADE");
       table.float("hrs_worked");
       table.date("log_day").defaultTo(knex.fn.now());
@@ -27,7 +26,6 @@ exports.up = function(knex, Promise) {
       table
         .integer("user_id")
         .references("users.id")
-        .inTable("users")
         .onDelete("CASCADE");
       table.integer("month");
       table.integer("year");
