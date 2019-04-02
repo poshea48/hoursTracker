@@ -18,18 +18,20 @@ let sample = {
 };
 
 bcrypt.genSalt(10, (err, salt) => {
-  bcrypt.hash(paul.password_digest, salt, (err, hash) => {
-    if (err) throw err;
-    paul.password_digest = hash;
+  [paul, abigail, sample].forEach(user => {
+    bcrypt.hash(user.password_digest, salt, (err, hash) => {
+      if (err) throw err;
+      user.password_digest = hash;
+    });
   });
 });
 
-bcrypt.genSalt(10, (err, salt) => {
-  bcrypt.hash(abigail.password_digest, salt, (err, hash) => {
-    if (err) throw err;
-    abigail.password_digest = hash;
-  });
-});
+// bcrypt.genSalt(10, (err, salt) => {
+//   bcrypt.hash(abigail.password_digest, salt, (err, hash) => {
+//     if (err) throw err;
+//     abigail.password_digest = hash;
+//   });
+// });
 
 // bcrypt.genSalt(10, (err, salt) => {
 //   bcrypt.hash(newUser.password_digest, salt, (err, hash) => {
@@ -40,14 +42,10 @@ bcrypt.genSalt(10, (err, salt) => {
 
 exports.seed = function(knex, Promise) {
   // Deletes ALL existing entries
-  return knex("logged_work")
+  return knex("users")
     .del()
     .then(function() {
-      return knex("users")
-        .del()
-        .then(function() {
-          // Inserts seed entries
-          return knex("users").insert([paul, abigail, sample]);
-        });
+      // Inserts seed entries
+      return knex("users").insert([paul, abigail, sample]);
     });
 };
