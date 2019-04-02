@@ -11,6 +11,12 @@ let abigail = {
   password_digest: "thegailface"
 };
 
+let sample = {
+  name: "Sample Data",
+  email: "sample@email.com",
+  password_digest: "sample"
+};
+
 bcrypt.genSalt(10, (err, salt) => {
   bcrypt.hash(paul.password_digest, salt, (err, hash) => {
     if (err) throw err;
@@ -38,6 +44,6 @@ exports.seed = function(knex, Promise) {
     .del()
     .then(function() {
       // Inserts seed entries
-      return knex("users").insert([paul, abigail]);
+      return knex("users").insert([paul, abigail, sample]);
     });
 };
