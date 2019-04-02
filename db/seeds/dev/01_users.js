@@ -42,10 +42,8 @@ bcrypt.genSalt(10, (err, salt) => {
 
 exports.seed = function(knex, Promise) {
   // Deletes ALL existing entries
-  return knex("users")
-    .del()
-    .then(function() {
-      // Inserts seed entries
-      return knex("users").insert([paul, abigail, sample]);
-    });
+  return knex.raw("DROP TABLE users CASCADE").then(function() {
+    // Inserts seed entries
+    return knex("users").insert([paul, abigail, sample]);
+  });
 };
