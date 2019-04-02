@@ -42,10 +42,18 @@ bcrypt.genSalt(10, (err, salt) => {
 
 exports.seed = function(knex, Promise) {
   // Deletes ALL existing entries
-  return knex("users")
+  return knex("archive_months")
     .del()
-    .then(function() {
-      // Inserts seed entries
-      return knex("users").insert([paul, abigail, sample]);
-    });
+    .then(() =>
+      knex("logged_work")
+        .del()
+        .then(() => {
+          return knex("users")
+            .del()
+            .then(() => {
+              // Inserts seed entries
+              return knex("users").insert([paul, abigail, sample]);
+            });
+        })
+    );
 };
