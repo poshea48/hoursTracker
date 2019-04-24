@@ -4,10 +4,7 @@ import Spinner from "../common/Spinner";
 import { connect } from "react-redux";
 import Header from "./Header";
 import getTodaysDate from "../utils/getTodaysDate";
-import StartButton from "../buttons/StartButton";
-import StopButton from "../buttons/StopButton";
-import ResetButton from "../buttons/ResetButton";
-import LogButton from "../buttons/LogButton";
+import ButtonNav from "../buttons/ButtonNav";
 import Navbar from "./Navbar";
 import Graph from "../charts/Graph";
 import NavHistory from "./NavHistory";
@@ -17,16 +14,17 @@ import {
   stopTimer,
   resetTimer,
   logHours,
-  updateTimer
+  updateTimer,
+  archiveHours
 } from "../redux/actions/timerActions";
 import { logoutUser } from "../redux/actions/authActions";
-import axios from "axios";
 
 import jwt_decode from "jwt-decode";
+import setAuthToken from "../utils/setAuthToken";
 
 class MainPage extends Component {
   onLogoutClick = e => {
-    e.preventDefault();
+    e && e.preventDefault();
     const { hoursToday } = this.props.timer;
     if (hoursToday > 0) {
       this.props.logHours(hoursToday);
@@ -104,18 +102,29 @@ class MainPage extends Component {
   componentDidMount() {
     console.log("mounting");
     const localData = this.getDataFromLocal();
-    // Archive hours
-    // if (new Date(localData.dateToday).getDate() === 6) {
-    //   axios.post("api/hours/archive-hours");
-    // }
+
     this.props.getDailyChart(localData.hoursToday, localData.dateToday);
     this.props.updateTimer(localData);
+
+    // Archive hours
+    if (new Date(localData.dateToday).getDate() === 7) {
+      return this.props.timer.archived ? null : this.props.archiveHours();
+    }
   }
 
-  // Check is hoursToday in timer object changed, if so then update daily chart
-  // After reset and log hours dbCheck is set to false, returns updated chart with logged hours
+  // Check if hoursToday in timer object changed, if so then update daily chart
   componentDidUpdate(prevProps) {
     console.log("updating");
+    if (localStorage.jwtTokenHoursTracker) {
+      setAuthToken(localStorage.jwtTokenHoursTracker);
+      const decoded = jwt_decode(localStorage.jwtTokenHoursTracker);
+
+      // Check for expired token
+      const currentTime = Date.now() / 1000;
+      if (decoded.exp < currentTime) {
+        this.onLogoutClick();
+      }
+    }
 
     if (!this.props.timer.dateToday) {
       const localData = this.getDataFromLocal();
@@ -133,16 +142,9 @@ class MainPage extends Component {
   }
 
   render() {
-    const decoded = jwt_decode(localStorage.jwtTokenHoursTracker);
-    const currentTime = Date.now() / 1000;
-    if (decoded.exp < currentTime) {
-      // const { hoursToday, dateToday } = store.getState().timer;
+    // const decoded = jwt_decode(localStorage.jwtTokenHoursTracker);
+    // const currentTime = Date.now() / 1000;
 
-      // if (hoursToday > 0) {
-      //   store.dispatch(logHours(hoursToday, dateToday));
-      // }
-      this.props.logoutUser();
-    }
     const { start, stop, reset, log } = this.props.timer.disabled;
     const { chartType, data, loading } = this.props.chart;
     return (
@@ -150,14 +152,19 @@ class MainPage extends Component {
         <div className="main">
           <Navbar onLogoutClick={this.onLogoutClick} auth={this.props.auth} />
           <Header />
-          <div className="actions d-flex justify-content-center">
-            <StartButton disabled={start} startTimer={this.handleStartClick} />
-            <StopButton disabled={stop} stopTimer={this.handleStopClick} />
-            <ResetButton disabled={reset} resetTimer={this.handleResetClick} />
-            <LogButton disabled={log} logHours={this.handleLogClick} />
-          </div>
+          <ButtonNav
+            startDisabled={start}
+            stopDisabled={stop}
+            resetDisabled={reset}
+            logDisabled={log}
+            startTimer={this.handleStartClick}
+            stopTimer={this.handleStopClick}
+            resetTimer={this.handleResetClick}
+            logHours={this.handleLogClick}
+          />
+
           <NavHistory chartType={chartType} />
-          {loading || typeof data === "undefined " ? (
+          {loading || typeof data === "undefined" ? (
             <Spinner />
           ) : (
             <div className="chart">
@@ -178,6 +185,7 @@ MainPage.propTypes = {
   stopTimer: PropTypes.func.isRequired,
   resetTimer: PropTypes.func.isRequired,
   logHours: PropTypes.func.isRequired,
+  archiveHours: PropTypes.func.isRequired,
   logoutUser: PropTypes.func.isRequired,
   chart: PropTypes.object.isRequired,
   timer: PropTypes.object.isRequired
@@ -202,6 +210,7 @@ export default connect(
     resetTimer,
     logHours,
     updateTimer,
-    logoutUser
+    logoutUser,
+    archiveHours
   }
 )(MainPage);

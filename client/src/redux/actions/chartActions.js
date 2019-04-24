@@ -37,13 +37,6 @@ export const updateTodaysData = (data, hoursToday) => dispatch => {
   });
 };
 
-// export const addToday = (hours) => dispatch => {
-//   return {
-//     type: ADD_TODAY,
-//     payload: hours
-//   }
-// }
-
 export const getWeeklyChart = () => dispatch => {
   dispatch(setChartLoading());
   axios

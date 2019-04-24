@@ -96,7 +96,7 @@ router.post("/login", (req, res) => {
 
   db.select()
     .from("users")
-    .where({ email: req.body.email })
+    .where({ email: email })
     .then(data => {
       let user = data[0];
       if (!user) {

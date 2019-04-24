@@ -107,25 +107,36 @@ router.post(
     let user_id = req.user.id;
     let month = new Date().getMonth() + 1 - 2;
     let year = new Date().getFullYear();
+    // Adjust if month is from last year
     if (month < 1) {
       month += 12;
       year -= 1;
     }
-    db.raw(
-      `insert into archive_months (user_id, month, year, hrs_worked) values
-        (${user_id}, ${month}, ${year}, (select sum(hrs_worked) from logged_work where extract('month' from log_day) = ${month}))
-      `
-    )
-      .then(() => {
-        db.raw(
-          `delete from logged_work where user_id = ${
-            req.user.id
-          } and extract('month' from log_day) = ${month}`
-        )
-          .then(() => console.log("hours were archived"))
-          .catch(err => console.log(err));
-      })
-      .catch(err => console.log("this is error", err));
+    db.select()
+      .from("archive_months")
+      .where({ month: month, year: year })
+      .then(data => {
+        // check if data all ready has been archived
+        if (data.length > 0) {
+          console.log("data has all ready been archived");
+          return res.send("");
+        } else {
+          return db
+            .raw(
+              `insert into archive_months (user_id, month, year, hrs_worked) values
+              (${user_id}, ${month}, ${year}, (select sum(hrs_worked) from logged_work where extract('month' from log_day) = ${month}))
+            `
+            )
+            .then(() => {
+              db.raw(
+                `delete from logged_work where user_id = ${
+                  req.user.id
+                } and extract('month' from log_day) = ${month}`
+              ).then(() => res.send("success"));
+            })
+            .catch(err => console.log("this is error", err));
+        }
+      });
   }
 );
 

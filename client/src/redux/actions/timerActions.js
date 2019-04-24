@@ -1,5 +1,11 @@
 import axios from "axios";
-import { START_TIMER, STOP_TIMER, RESET_TIMER, UPDATE_TIMER } from "./types";
+import {
+  START_TIMER,
+  STOP_TIMER,
+  RESET_TIMER,
+  UPDATE_TIMER,
+  HOURS_ARCHIVED
+} from "./types";
 
 export const startTimer = () => dispatch => {
   dispatch({
@@ -44,4 +50,13 @@ export const logHours = (hours, date) => dispatch => {
       })
     )
     .catch(err => console.log(err));
+};
+
+export const archiveHours = () => dispatch => {
+  axios
+    .post("/api/hours/archive-hours")
+    .then(res => {
+      return dispatch({ type: HOURS_ARCHIVED });
+    })
+    .catch(err => console.log("hours not archived, something happened"));
 };

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import "../css/Graph.css";
 import Bar from "./Bar";
 import XContent from "./XContent";
@@ -6,8 +6,8 @@ import YContent from "./YContent";
 import Spinner from "../common/Spinner";
 import isEmpty from "../validation/is-empty";
 
-class Graph extends Component {
-  renderBars = (data, chartType, hoursToday) => {
+class Graph extends PureComponent {
+  renderBars = (data, chartType) => {
     let size = data.length - 1;
     if (isEmpty(data)) {
       return <Spinner />;
@@ -48,9 +48,20 @@ class Graph extends Component {
     return scale;
   };
 
-  render() {
-    const { data, chartType, hoursToday } = this.props;
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   if (
+  //     nextProps.data !== this.props.data ||
+  //     nextProps.chartType !== this.props.chartType
+  //   ) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
 
+  render() {
+    const { data, chartType } = this.props;
+    console.log("rendering Graph");
     return (
       <div className="graph-wrapper">
         <div className="graph">
@@ -68,7 +79,7 @@ class Graph extends Component {
               <div className="line" />
               <div className="line" />
             </div>
-            {this.renderBars(data, chartType, hoursToday)}
+            {this.renderBars(data, chartType)}
           </div>
         </div>
         <XContent data={data} chartType={chartType} />

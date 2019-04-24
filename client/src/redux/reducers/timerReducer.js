@@ -1,21 +1,28 @@
-import { START_TIMER, STOP_TIMER, RESET_TIMER, UPDATE_TIMER } from '../actions/types'
-import getTodaysDate from '../../utils/getTodaysDate';
+import {
+  START_TIMER,
+  STOP_TIMER,
+  RESET_TIMER,
+  UPDATE_TIMER,
+  HOURS_ARCHIVED
+} from "../actions/types";
+import getTodaysDate from "../../utils/getTodaysDate";
 
 const initialState = {
-  dateToday: '',
-  hoursToday: 0,//Number(localStorage.getItem('hoursToday')) || 0,
+  dateToday: "",
+  hoursToday: 0, //Number(localStorage.getItem('hoursToday')) || 0,
   startTime: 0,
   forceLog: false,
+  archived: false,
   disabled: {
     start: false,
     stop: true,
     reset: true,
     log: true
-  },
-}
+  }
+};
 
 export default (state = initialState, action) => {
-  switch(action.type) {
+  switch (action.type) {
     case START_TIMER:
       return {
         ...state,
@@ -27,7 +34,7 @@ export default (state = initialState, action) => {
           reset: true,
           log: true
         }
-      }
+      };
     case STOP_TIMER:
       return {
         ...state,
@@ -38,11 +45,11 @@ export default (state = initialState, action) => {
           stop: true,
           reset: false,
           log: false
-        },
-      }
+        }
+      };
     case UPDATE_TIMER:
       const today = new Date();
-      const { hoursToday, dateToday, startTime} = action.payload
+      const { hoursToday, dateToday, startTime } = action.payload;
       let disabled;
       let forced;
       if (today.toDateString() !== new Date(dateToday).toDateString()) {
@@ -51,27 +58,27 @@ export default (state = initialState, action) => {
           stop: true,
           reset: false,
           log: false
-        }
-        forced = true
+        };
+        forced = true;
       } else {
         disabled = {
           start: startTime > 0,
           stop: startTime === 0,
           reset: startTime === 0 && hoursToday === 0,
           log: startTime === 0 && hoursToday === 0
-        }
-        forced = false
+        };
+        forced = false;
       }
       return {
         ...state,
         ...action.payload,
         forceLog: forced,
         disabled: disabled
-      }
+      };
     case RESET_TIMER:
       return {
         ...state,
-        dateToday: '',
+        dateToday: "",
         hoursToday: 0,
         startTime: 0,
         forceLog: false,
@@ -81,9 +88,13 @@ export default (state = initialState, action) => {
           reset: true,
           log: true
         }
-      }
-
+      };
+    case HOURS_ARCHIVED:
+      return {
+        ...state,
+        archived: true
+      };
     default:
-      return state
+      return state;
   }
-}
+};
