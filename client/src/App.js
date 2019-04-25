@@ -16,23 +16,23 @@ import PrivateRoute from "./common/PrivateRoute";
 import Footer from "./layout/Footer";
 
 // Check for token
-if (localStorage.jwtTokenHoursTracker) {
-  setAuthToken(localStorage.jwtTokenHoursTracker);
-  const decoded = jwt_decode(localStorage.jwtTokenHoursTracker);
-  store.dispatch(setCurrentUser(decoded));
-
-  // Check for expired token
-  const currentTime = Date.now() / 1000;
-  if (decoded.exp < currentTime) {
-    const { hoursToday, dateToday } = store.getState().timer;
-
-    if (hoursToday > 0) {
-      store.dispatch(logHours(hoursToday, dateToday));
-    }
-    store.dispatch(logoutUser());
-    window.location.href = "/login";
-  }
-}
+// if (localStorage.jwtTokenHoursTracker) {
+//   setAuthToken(localStorage.jwtTokenHoursTracker);
+//   const decoded = jwt_decode(localStorage.jwtTokenHoursTracker);
+//   store.dispatch(setCurrentUser(decoded));
+//
+//   // Check for expired token
+//   const currentTime = Date.now() / 1000;
+//   if (decoded.exp < currentTime) {
+//     const { hoursToday, dateToday } = store.getState().timer;
+//
+//     if (hoursToday > 0) {
+//       store.dispatch(logHours(hoursToday, dateToday));
+//     }
+//     store.dispatch(logoutUser());
+//     window.location.href = "/login";
+//   }
+// }
 
 class App extends Component {
   render() {

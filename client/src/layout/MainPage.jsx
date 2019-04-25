@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Spinner from "../common/Spinner";
 import { connect } from "react-redux";
+import FlashMessage from "./FlashMessage";
 import Header from "./Header";
 import getTodaysDate from "../utils/getTodaysDate";
 import ButtonNav from "../buttons/ButtonNav";
@@ -23,7 +24,14 @@ import jwt_decode from "jwt-decode";
 import setAuthToken from "../utils/setAuthToken";
 
 class MainPage extends Component {
+  state = {
+    flash: ""
+  };
+
   onLogoutClick = e => {
+    let message = "Logout has been disabled";
+    this.setState({ flash: message });
+    return;
     e && e.preventDefault();
     const { hoursToday } = this.props.timer;
     if (hoursToday > 0) {
@@ -79,6 +87,11 @@ class MainPage extends Component {
     this.props.logHours(hoursToday + addedHours, dateToday);
   };
 
+  removeFlashMessage = e => {
+    e.preventDefault();
+    this.setState({ flash: "" });
+  };
+
   getDataFromLocal = () => {
     if (
       !localStorage.getItem("dateToday") ||
@@ -115,16 +128,17 @@ class MainPage extends Component {
   // Check if hoursToday in timer object changed, if so then update daily chart
   componentDidUpdate(prevProps) {
     console.log("updating");
-    if (localStorage.jwtTokenHoursTracker) {
-      setAuthToken(localStorage.jwtTokenHoursTracker);
-      const decoded = jwt_decode(localStorage.jwtTokenHoursTracker);
-
-      // Check for expired token
-      const currentTime = Date.now() / 1000;
-      if (decoded.exp < currentTime) {
-        this.onLogoutClick();
-      }
-    }
+    // disabling login/logout
+    // if (localStorage.jwtTokenHoursTracker) {
+    //   setAuthToken(localStorage.jwtTokenHoursTracker);
+    //   const decoded = jwt_decode(localStorage.jwtTokenHoursTracker);
+    //
+    //   // Check for expired token
+    //   const currentTime = Date.now() / 1000;
+    //   if (decoded.exp < currentTime) {
+    //     this.onLogoutClick();
+    //   }
+    // }
 
     if (!this.props.timer.dateToday) {
       const localData = this.getDataFromLocal();
@@ -151,6 +165,12 @@ class MainPage extends Component {
       <div>
         <div className="main">
           <Navbar onLogoutClick={this.onLogoutClick} auth={this.props.auth} />
+          {this.state.flash && (
+            <FlashMessage
+              message={this.state.flash}
+              remove={this.removeFlashMessage}
+            />
+          )}
           <Header />
           <ButtonNav
             startDisabled={start}

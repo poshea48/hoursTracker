@@ -27,6 +27,7 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     let date = req.query.today;
+    console.log(req.user);
     db.raw(
       `select series as period,
       coalesce(hrs_worked, 0) as hours from

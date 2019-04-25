@@ -86,13 +86,16 @@ router.patch("/profile/:id", (req, res) => {
 
 router.post("/login", (req, res) => {
   const { errors, isValid } = validateLoginInput(req.body);
-
   if (!isValid) {
     return res.status(404).json(errors);
   }
 
-  const email = req.body.email.toLowerCase();
-  const password = req.body.password;
+  // const email = req.body.email.toLowerCase();
+  // const password = req.body.password;
+
+  // create sample login
+  const email = "sample@email.com";
+  const password = "sample";
 
   db.select()
     .from("users")
@@ -116,7 +119,7 @@ router.post("/login", (req, res) => {
             jwt.sign(
               payload,
               keys.secretOrKey,
-              { expiresIn: DAYINSECS },
+              // { expiresIn: DAYINSECS },
               (err, token) => {
                 res.json({
                   success: true,
