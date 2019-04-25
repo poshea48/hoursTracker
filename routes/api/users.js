@@ -85,8 +85,11 @@ router.patch("/profile/:id", (req, res) => {
 // public
 
 router.post("/login", (req, res) => {
-  const { errors, isValid } = validateLoginInput(req.body);
+  // const { errors, isValid } = validateLoginInput(req.body);
+  const errors = {};
+  const isValid = true;
   if (!isValid) {
+    console.log("somehow making it in here");
     return res.status(404).json(errors);
   }
 
@@ -102,6 +105,7 @@ router.post("/login", (req, res) => {
     .where({ email: email })
     .then(data => {
       let user = data[0];
+      console.log(email);
       if (!user) {
         errors.login = "Incorrect user/password combination";
         return res.status(404).json(errors);
