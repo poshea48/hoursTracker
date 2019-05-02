@@ -16,10 +16,11 @@ import PrivateRoute from "./common/PrivateRoute";
 import Footer from "./layout/Footer";
 
 // Check for token
-// if (localStorage.jwtTokenHoursTracker) {
-//   setAuthToken(localStorage.jwtTokenHoursTracker);
-//   const decoded = jwt_decode(localStorage.jwtTokenHoursTracker);
-//   store.dispatch(setCurrentUser(decoded));
+if (localStorage.jwtTokenHoursTracker) {
+  setAuthToken(localStorage.jwtTokenHoursTracker);
+  const decoded = jwt_decode(localStorage.jwtTokenHoursTracker);
+  store.dispatch(setCurrentUser(decoded));
+}
 //
 //   // Check for expired token
 //   const currentTime = Date.now() / 1000;

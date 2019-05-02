@@ -89,7 +89,6 @@ router.post("/login", (req, res) => {
   const errors = {};
   const isValid = true;
   if (!isValid) {
-    console.log("somehow making it in here");
     return res.status(404).json(errors);
   }
 
@@ -97,20 +96,18 @@ router.post("/login", (req, res) => {
   // const password = req.body.password;
 
   // create sample login
-  const email = "sample@email.com";
-  const password = "sample";
+  const email = "poshea48@msn.com";
+  const password = "thewolf";
 
   db.select()
     .from("users")
     .where({ email: email })
     .then(data => {
       let user = data[0];
-      console.log(email);
       if (!user) {
         errors.login = "Incorrect user/password combination";
         return res.status(404).json(errors);
       }
-      console.log(user);
       // Check password
       bcrypt
         .compare(password, user.password_digest)
