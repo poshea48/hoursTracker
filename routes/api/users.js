@@ -96,8 +96,16 @@ router.post("/login", (req, res) => {
   // const password = req.body.password;
 
   // create sample login
-  const email = "poshea48@msn.com";
-  const password = "thewolf";
+  console.log(req.body);
+  let email;
+  let password;
+  if (req.body.env === "development") {
+    email = "poshea48@msn.com";
+    password = "thewolf";
+  } else {
+    email = "sample@email.com";
+    password = "sample";
+  }
 
   db.select()
     .from("users")

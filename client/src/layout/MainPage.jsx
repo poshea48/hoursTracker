@@ -158,7 +158,6 @@ class MainPage extends Component {
   render() {
     // const decoded = jwt_decode(localStorage.jwtTokenHoursTracker);
     // const currentTime = Date.now() / 1000;
-    console.log(process.env);
     const { start, stop, reset, log } = this.props.timer.disabled;
     const { chartType, data, loading } = this.props.chart;
     return (

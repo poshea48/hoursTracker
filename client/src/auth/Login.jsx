@@ -20,7 +20,8 @@ class Login extends Component {
   onSubmit = e => {
     e.preventDefault();
     // const userData = { ...this.state };
-    const userData = { email: "poshea48@msn.com", password: "thewolf" };
+    let env = process.env.NODE_ENV;
+    const userData = { email: "poshea48@msn.com", password: "thewolf", env };
     this.props.loginUser(userData);
   };
 
