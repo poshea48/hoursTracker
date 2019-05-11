@@ -160,6 +160,24 @@ class MainPage extends Component {
     // const currentTime = Date.now() / 1000;
     const { start, stop, reset, log } = this.props.timer.disabled;
     const { chartType, data, loading } = this.props.chart;
+    const actions = {
+      Start: {
+        action: this.handleStartClick,
+        disabled: start
+      },
+      Stop: {
+        action: this.handleStopClick,
+        disabled: stop
+      },
+      Reset: {
+        action: this.handleResetClick,
+        disabled: reset
+      },
+      "Log Hours": {
+        action: this.handleLogClick,
+        disabled: log
+      }
+    };
     return (
       <div>
         <div className="main">
@@ -172,6 +190,7 @@ class MainPage extends Component {
           )}
           <Header />
           <ButtonNav
+            actions={actions}
             startDisabled={start}
             stopDisabled={stop}
             resetDisabled={reset}

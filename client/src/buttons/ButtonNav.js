@@ -1,9 +1,6 @@
 import React, { PureComponent } from "react";
 import styled from "styled-components";
-import StartButton from "./StartButton";
-import StopButton from "./StopButton";
-import ResetButton from "./ResetButton";
-import LogButton from "./LogButton";
+import ActionButton from "./ActionButton";
 
 const Container = styled.div`
   display: flex;
@@ -15,27 +12,18 @@ const Container = styled.div`
     align-items: center;
   }
 `;
-class ButtonNav extends PureComponent {
-  render() {
-    const {
-      startDisabled,
-      stopDisabled,
-      resetDisabled,
-      logDisabled,
-      startTimer,
-      stopTimer,
-      resetTimer,
-      logHours
-    } = this.props;
-    return (
-      <Container>
-        <StartButton disabled={startDisabled} startTimer={startTimer} />
-        <StopButton disabled={stopDisabled} stopTimer={stopTimer} />
-        <ResetButton disabled={resetDisabled} resetTimer={resetTimer} />
-        <LogButton disabled={logDisabled} logHours={logHours} />
-      </Container>
-    );
-  }
-}
+
+const ButtonNav = ({ actions }) => {
+  const buttons = Object.keys(actions).map(button => (
+    <ActionButton
+      disabled={actions[button].disabled}
+      clicked={actions[button].action}
+    >
+      {button}
+    </ActionButton>
+  ));
+
+  return <Container>{buttons}</Container>;
+};
 
 export default ButtonNav;
