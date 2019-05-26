@@ -11,17 +11,6 @@ router.get("/", (req, res) => {
     .catch(err => console.log(err));
 });
 
-// router.get(
-//   '/today',
-//   passport.authenticate('jwt', { session: false }),
-//   (req, res) => {
-//     db.select('hrs_worked as hours').from('logged_work')
-//       .whereRaw(`user_id = ${req.user.id} and log_day = current_date`)
-//       // .whereRaw('log_day = current_date and id = ')
-//       .then(data => res.json(data[0]))
-//       .catch(err => console.log(err))
-// })
-
 router.get(
   "/daily",
   passport.authenticate("jwt", { session: false }),

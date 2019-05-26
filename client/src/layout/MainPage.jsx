@@ -6,7 +6,7 @@ import FlashMessage from "./FlashMessage";
 import Header from "./Header";
 import getTodaysDate from "../utils/getTodaysDate";
 import ButtonNav from "../buttons/ButtonNav";
-import Navbar from "./Navbar";
+import Navbar from "./Navbar/Navbar";
 import Graph from "../charts/Graph";
 import NavHistory from "./NavHistory";
 import { getDailyChart, updateTodaysData } from "../redux/actions/chartActions";
@@ -162,18 +162,22 @@ class MainPage extends Component {
     const { chartType, data, loading } = this.props.chart;
     const actions = {
       Start: {
+        id: "startId",
         action: this.handleStartClick,
         disabled: start
       },
       Stop: {
+        id: "stopId",
         action: this.handleStopClick,
         disabled: stop
       },
       Reset: {
+        id: "resetId",
         action: this.handleResetClick,
         disabled: reset
       },
       "Log Hours": {
+        id: "logId",
         action: this.handleLogClick,
         disabled: log
       }

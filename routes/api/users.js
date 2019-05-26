@@ -96,12 +96,13 @@ router.post("/login", (req, res) => {
   // const password = req.body.password;
 
   // create sample login
-  console.log(req.body);
+
   let email;
   let password;
   if (req.body.env === "development") {
-    email = "poshea48@msn.com";
-    password = "thewolf";
+    const user = require("../../devLogin");
+    email = user.email;
+    password = user.password;
   } else {
     email = "sample@email.com";
     password = "sample";

@@ -1,8 +1,8 @@
 const getTodaysDate = () => {
-  let dateArray = new Date().toDateString().split(" ")
+  let dateArray = new Date().toDateString().split(" ");
   dateArray.shift();
-  return dateArray.join(' ');
-}
+  return dateArray.join(" ");
+};
 
 export default getTodaysDate;
 

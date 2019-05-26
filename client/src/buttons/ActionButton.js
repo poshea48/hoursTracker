@@ -27,6 +27,24 @@ const Button = styled.button`
     transform: none;
     cursor: default;
   }
+
+  @media (max-width: 670px) {
+    width: 8em;
+  }
+
+  @media (max-width: 520px) {
+    width: 7.5em;
+  }
+
+  @media (max-width: 500px) {
+    font-size: 90%;
+  }
+
+  @media (max-width: 450px) {
+    align-self: center;
+    font-size: 100%;
+    width: 10em;
+  }
 `;
 
 const ActionButton = ({ clicked, disabled, children }) => (

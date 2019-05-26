@@ -4,6 +4,12 @@
   margin: 50px 0;
 }
 
+@media (max-width: 450px) {
+  .nav-history-wrapper {
+    margin: 25px 0;
+  }
+}
+
 .nav-history {
   width: 70%;
   max-width: 500px;

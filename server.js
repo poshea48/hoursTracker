@@ -3,7 +3,7 @@ const apiRoute = require("./routes/api/");
 const parser = require("body-parser");
 const app = express();
 const passport = require("passport");
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8000;
 const https = require("https");
 const fs = require("fs");
 
