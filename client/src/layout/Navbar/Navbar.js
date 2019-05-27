@@ -49,16 +49,11 @@ const Navbar = props => {
   const [isToggleOn, setToggle] = useState(false);
 
   const toggle = () => {
-    const toggleScreen = document.getElementById("toggleList");
-    if (isToggleOn) {
-      toggleScreen.style.display = "none";
-    } else {
-      toggleScreen.style.display = "block";
-    }
     setToggle(!isToggleOn);
   };
 
   const { onLogoutClick, auth } = props;
+  console.log(isToggleOn);
   return (
     <Container>
       <NavItem>
@@ -79,7 +74,10 @@ const Navbar = props => {
 
       <HamburgerNavItem>
         <Hamburger click={toggle} />
-        <ToggleScreen auth={auth} onLogoutClick={onLogoutClick} />
+
+        {isToggleOn ? (
+          <ToggleScreen auth={auth} onLogoutClick={onLogoutClick} />
+        ) : null}
       </HamburgerNavItem>
     </Container>
   );
