@@ -6,11 +6,13 @@ import {
   UPDATE_TIMER,
   HOURS_ARCHIVED
 } from "./types";
+import getTodaysDate from "../../utils/getTodaysDate";
 
 export const startTimer = () => dispatch => {
+  const today = getTodaysDate();
   dispatch({
     type: START_TIMER,
-    payload: new Date().getTime()
+    payload: { time: new Date().getTime(), date: today }
   });
 };
 

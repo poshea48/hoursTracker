@@ -26,8 +26,8 @@ export default (state = initialState, action) => {
     case START_TIMER:
       return {
         ...state,
-        dateToday: getTodaysDate(),
-        startTime: action.payload,
+        dateToday: action.payload.date,
+        startTime: action.payload.time,
         disabled: {
           start: true,
           stop: false,

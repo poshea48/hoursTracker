@@ -3,34 +3,56 @@ import styled, { css, keyframes } from "styled-components";
 import AuthLinks from "./AuthLinks";
 import GuestLinks from "./GuestLinks";
 
-const animationBackdrop = keyframes`
+const fadeinBackdrop = keyframes`
   0% {
-    height: 0;
-
+    visibility: hidden;
+    top: 0;
+    z-index: -1;
   }
 
   100% {
-    height: 100%;
+    visibility: visible;
+    top: 60px;
+    z-index: -1;
   }
+`;
+
+const fadeoutBackdrop = keyframes`
+  100% {
+    visibility: visible;
+    top: 60px;
+    z-index: -1;
+  }
+  0% {
+    visibility: hidden;
+    top: 0;
+    z-index: -1;
+  }
+
 `;
 
 const animationItems = keyframes`
   0% {
-    height: 100%;
     opacity: 0;
   }
+  80% {
+    opacity: 0
+  }
   100% {
-    height: 100%;
     opacity: 1;
   }
 `;
 
-const animationBackdropRule = css`
-  ${animationBackdrop} .5s ease-in-out;
+const fadeinRule = css`
+  ${fadeinBackdrop} .5s ease-in-out;
+`;
+
+const fadeoutRule = css`
+  ${fadeoutRule} .5s ease-in-out;
 `;
 
 const animationItemsRule = css`
-  ${animationItems} .5s ease-in-out;
+  ${animationItems} .6s ease-in-out;
 `;
 
 const Container = styled.div`
@@ -42,7 +64,10 @@ const Container = styled.div`
   color: #fff;
   text-align: end;
   padding-right: 1em;
-  animation: ${animationBackdropRule};
+  ${"" /* transition: top 2s ease-in-out; */}
+
+    animation: ${fadeinRule};
+
 `;
 
 const ToggleList = styled.div`
