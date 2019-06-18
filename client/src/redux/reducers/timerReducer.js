@@ -5,7 +5,6 @@ import {
   UPDATE_TIMER,
   HOURS_ARCHIVED
 } from "../actions/types";
-import getTodaysDate from "../../utils/getTodaysDate";
 
 const initialState = {
   dateToday: "",

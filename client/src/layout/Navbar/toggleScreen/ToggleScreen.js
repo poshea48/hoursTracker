@@ -1,7 +1,8 @@
 import React from "react";
 import styled, { css, keyframes } from "styled-components";
-import AuthLinks from "./AuthLinks";
-import GuestLinks from "./GuestLinks";
+import User from "../userItem/User";
+import AuthLinks from "../auth/AuthLinks";
+import GuestLinks from "../auth/GuestLinks";
 
 const fadeinBackdrop = keyframes`
   0% {
@@ -17,20 +18,6 @@ const fadeinBackdrop = keyframes`
   }
 `;
 
-const fadeoutBackdrop = keyframes`
-  100% {
-    visibility: visible;
-    top: 60px;
-    z-index: -1;
-  }
-  0% {
-    visibility: hidden;
-    top: 0;
-    z-index: -1;
-  }
-
-`;
-
 const animationItems = keyframes`
   0% {
     opacity: 0;
@@ -44,15 +31,11 @@ const animationItems = keyframes`
 `;
 
 const fadeinRule = css`
-  ${fadeinBackdrop} .5s ease-in-out;
-`;
-
-const fadeoutRule = css`
-  ${fadeoutRule} .5s ease-in-out;
+  ${fadeinBackdrop} .3s ease-in-out;
 `;
 
 const animationItemsRule = css`
-  ${animationItems} .6s ease-in-out;
+  ${animationItems} .3s ease-in-out;
 `;
 
 const Container = styled.div`
@@ -64,10 +47,7 @@ const Container = styled.div`
   color: #fff;
   text-align: end;
   padding-right: 1em;
-  ${"" /* transition: top 2s ease-in-out; */}
-
-    animation: ${fadeinRule};
-
+  animation: ${fadeinRule};
 `;
 
 const ToggleList = styled.div`
@@ -84,7 +64,7 @@ const ToggleScreen = ({ auth, onLogoutClick }) => (
   <Container id="toggleList">
     <ToggleList>
       <ToggleItem>
-        <h4 style={{ margin: 0 }}>{auth.user.name}</h4>
+        <User style={{ display: "block" }} name={auth.user.name} />
       </ToggleItem>
       <ToggleItem>
         {auth.isAuthenticated ? (

@@ -1,6 +1,16 @@
 import React from "react";
 import styled from "styled-components";
 
+const Wrapper = styled.div`
+  align-self: center;
+  margin: 5px 1em;
+
+  display: none;
+  @media (max-width: 520px) {
+    display: flex;
+    flex-direction: column;
+  }
+`;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -16,11 +26,13 @@ const Line = styled.div`
   width: 100%;
 `;
 const Hamburger = ({ click }) => (
-  <Container onClick={click}>
-    <Line />
-    <Line />
-    <Line />
-  </Container>
+  <Wrapper>
+    <Container onClick={click}>
+      <Line />
+      <Line />
+      <Line />
+    </Container>
+  </Wrapper>
 );
 
 export default Hamburger;

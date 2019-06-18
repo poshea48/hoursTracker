@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import AuthLinks from "./AuthLinks";
-import GuestLinks from "./GuestLinks";
-import NavLink from "./NavLink";
-import Hamburger from "./Hamburger";
-import ToggleScreen from "./ToggleScreen";
+import User from "./userItem/User";
+import Brand from "./brand/Brand";
+import AuthLinks from "./auth/AuthLinks";
+import GuestLinks from "./auth/GuestLinks";
+import Toggle from "./toggleScreen/Toggle";
 
 const Container = styled.div`
   display: flex;
@@ -15,8 +15,7 @@ const Container = styled.div`
   justify-content: space-between;
   z-index: 10;
 `;
-
-const NavItem = styled.div`
+const ResponsiveLink = styled.div`
   align-self: center;
   margin: 5px 1em;
 
@@ -25,93 +24,27 @@ const NavItem = styled.div`
   }
 `;
 
-const BrandNav = styled(NavItem)`
-  font-family: Monospace;
-  font-size: 1.5em;
-  @media (max-width: 520px) {
-    display: flex;
-  }
-
-  @media (max-width: 375px) {
-    display: flex;
-    font-size: 1em;
-  }
-`;
-
-const HamburgerNavItem = styled(NavItem)`
-  display: none;
-  @media (max-width: 520px) {
-    display: flex;
-    flex-direction: column;
-  }
-`;
-
 const Navbar = props => {
-  const [isToggleOn, setToggle] = useState(false);
-
-  const toggle = () => {
-    setToggle(!isToggleOn);
-  };
-
   const { onLogoutClick, auth } = props;
-  console.log(isToggleOn);
+
   return (
     <Container>
-      <NavItem>
-        <h5 style={{ margin: 0 }}>{auth.user.name}</h5>
-      </NavItem>
-      <BrandNav>
-        <NavLink brand to="/dashboard">
-          Hours Tracker
-        </NavLink>
-      </BrandNav>
-      <NavItem>
+      <ResponsiveLink>
+        <User name={auth.user.name} />
+      </ResponsiveLink>
+
+      <Brand />
+      <ResponsiveLink>
         {auth.isAuthenticated ? (
           <AuthLinks click={onLogoutClick} />
         ) : (
           <GuestLinks />
         )}
-      </NavItem>
+      </ResponsiveLink>
 
-      <HamburgerNavItem>
-        <Hamburger click={toggle} />
-
-        {isToggleOn ? (
-          <ToggleScreen auth={auth} onLogoutClick={onLogoutClick} />
-        ) : null}
-      </HamburgerNavItem>
+      <Toggle auth={auth} onLogoutClick={onLogoutClick} />
     </Container>
   );
 };
-
-// class Navbar extends Component {
-//   render() {
-//     const { onLogoutClick, auth } = this.props;
-//     const authLinks = auth.isAuthenticated ? (
-//       <div className="nav-item auth">
-//         <ul>
-//           <li>
-//             <button className="auth-button" onClick={onLogoutClick}>
-//               Log Out
-//             </button>
-//           </li>
-//         </ul>
-//       </div>
-//     ) : (
-//       <div className="nav-item auth">
-//         <ul>
-//           <li>Log In</li>
-//           <li>Register</li>
-//         </ul>
-//       </div>
-//     );
-//     return (
-//       <div className="navbar">
-//         <div className="nav-item" />
-//         {authLinks}
-//       </div>
-//     );
-//   }
-// }
 
 export default Navbar;

@@ -20,9 +20,6 @@ import {
 } from "../redux/actions/timerActions";
 import { logoutUser } from "../redux/actions/authActions";
 
-import jwt_decode from "jwt-decode";
-import setAuthToken from "../utils/setAuthToken";
-
 class MainPage extends Component {
   state = {
     flash: ""
@@ -32,16 +29,16 @@ class MainPage extends Component {
     let message = "Logout has been disabled";
     this.setState({ flash: message });
     return;
-    e && e.preventDefault();
-    const { hoursToday } = this.props.timer;
-    if (hoursToday > 0) {
-      this.props.logHours(hoursToday);
-    }
-    ["hoursToday", "startTime", "dateToday"].forEach(i =>
-      localStorage.removeItem(i)
-    );
-    console.log("should be logging out");
-    this.props.logoutUser();
+    // e && e.preventDefault();
+    // const { hoursToday } = this.props.timer;
+    // if (hoursToday > 0) {
+    //   this.props.logHours(hoursToday);
+    // }
+    // ["hoursToday", "startTime", "dateToday"].forEach(i =>
+    //   localStorage.removeItem(i)
+    // );
+    // console.log("should be logging out");
+    // this.props.logoutUser();
   };
 
   handleStartClick = e => {
@@ -192,6 +189,7 @@ class MainPage extends Component {
               remove={this.removeFlashMessage}
             />
           )}
+
           <Header />
           <ButtonNav
             actions={actions}
