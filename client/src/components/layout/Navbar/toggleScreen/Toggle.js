@@ -5,7 +5,7 @@ import ToggleScreen from "./ToggleScreen";
 
 const Container = styled.div`
   align-self: center;
-  margin: 5px 1em;
+  margin: 5px 0.5em 5px 0.8em;
 
   display: none;
   @media (max-width: 520px) {

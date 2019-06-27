@@ -7,12 +7,12 @@ import { Provider } from "react-redux";
 import store from "./redux/store";
 
 import "./css/App.css";
-import MainPage from "./layout/MainPage";
-import Landing from "./layout/Landing";
-import Login from "./auth/Login";
-import Register from "./auth/Register";
-import PrivateRoute from "./common/PrivateRoute";
-import Footer from "./layout/Footer";
+import MainPage from "./Dashboard/MainPage";
+import Landing from "./components/layout/Landing";
+import Login from "./components/auth/Login";
+import Register from "./components/auth/Register";
+import PrivateRoute from "./components/common/PrivateRoute";
+import Footer from "./components/layout/Footer";
 
 // Check for token
 if (localStorage.jwtTokenHoursTracker) {

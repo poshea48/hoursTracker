@@ -11,9 +11,9 @@ const Container = styled.div`
     display: flex;
   }
 
-  @media (max-width: 375px) {
+  @media (max-width: 385px) {
     display: flex;
-    font-size: 1em;
+    font-size: 0.5em;
   }
 `;
 const Brand = () => (

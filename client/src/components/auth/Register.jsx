@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { registerUser } from "../redux/actions/authActions";
+import { registerUser } from "../../redux/actions/authActions";
 import TextFieldGroup from "../common/TextFieldGroup";
 
 class Register extends Component {

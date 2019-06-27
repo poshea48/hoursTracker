@@ -1,10 +1,10 @@
 import React, { PureComponent } from "react";
-import "../css/Graph.css";
+import "../../css/Graph.css";
 import Bar from "./Bar";
 import XContent from "./XContent";
 import YContent from "./YContent";
 import Spinner from "../common/Spinner";
-import isEmpty from "../validation/is-empty";
+import isEmpty from "../../validation/is-empty";
 
 class Graph extends PureComponent {
   renderBars = (data, chartType) => {
@@ -61,7 +61,7 @@ class Graph extends PureComponent {
 
   render() {
     const { data, chartType } = this.props;
-    console.log("rendering Graph");
+
     return (
       <div className="graph-wrapper">
         <div className="graph">

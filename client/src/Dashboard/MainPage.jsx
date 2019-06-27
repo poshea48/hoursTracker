@@ -1,14 +1,14 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
-import Spinner from "../common/Spinner";
+import Spinner from "../components/common/Spinner";
 import { connect } from "react-redux";
-import FlashMessage from "./FlashMessage";
-import Header from "./Header";
+import FlashMessage from "../components/layout/FlashMessage";
+import Header from "../components/layout/Header";
 import getTodaysDate from "../utils/getTodaysDate";
-import ButtonNav from "../buttons/ButtonNav";
-import Navbar from "./Navbar/Navbar";
-import Graph from "../charts/Graph";
-import NavHistory from "./NavHistory";
+import ButtonNav from "../components/buttons/ButtonNav";
+import Navbar from "../components/layout/Navbar/Navbar";
+import Graph from "../components/charts/Graph";
+import NavHistory from "../components/layout/NavHistory";
 import { getDailyChart, updateTodaysData } from "../redux/actions/chartActions";
 import {
   startTimer,
@@ -20,7 +20,7 @@ import {
 } from "../redux/actions/timerActions";
 import { logoutUser } from "../redux/actions/authActions";
 
-class MainPage extends Component {
+class MainPage extends PureComponent {
   state = {
     flash: ""
   };
@@ -189,7 +189,6 @@ class MainPage extends Component {
               remove={this.removeFlashMessage}
             />
           )}
-
           <Header />
           <ButtonNav
             actions={actions}
@@ -202,7 +201,6 @@ class MainPage extends Component {
             resetTimer={this.handleResetClick}
             logHours={this.handleLogClick}
           />
-
           <NavHistory chartType={chartType} />
           {loading || typeof data === "undefined" ? (
             <Spinner />
