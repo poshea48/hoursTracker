@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { Route, Switch } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import setAuthToken from "./utils/setAuthToken";
@@ -33,25 +33,20 @@ if (localStorage.jwtTokenHoursTracker) {
 //     window.location.href = "/login";
 //   }
 // }
-
-class App extends Component {
-  render() {
-    return (
-      <Provider store={store}>
-        <div className="App">
-          <div className="app-content">
-            <Route exact path="/" component={Landing} />
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/register" component={Register} />
-            <Switch>
-              <PrivateRoute exact path="/dashboard" component={MainPage} />
-            </Switch>
-          </div>
-          <Footer />
-        </div>
-      </Provider>
-    );
-  }
-}
+const App = () => (
+  <Provider store={store}>
+    <div className="App">
+      <div className="app-content">
+        <Route exact path="/" component={Landing} />
+        <Route exact path="/login" component={Login} />
+        <Route exact path="/register" component={Register} />
+        <Switch>
+          <PrivateRoute exact path="/dashboard" component={MainPage} />
+        </Switch>
+      </div>
+      <Footer />
+    </div>
+  </Provider>
+);
 
 export default App;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import User from "./userItem/User";
 import Brand from "./brand/Brand";

@@ -8,6 +8,7 @@ const Container = styled.div`
   width: 100%;
   background-color: red;
   color: white;
+  z-index: 50;
 `;
 
 const Delete = styled.div`
@@ -17,11 +18,14 @@ const Delete = styled.div`
   cursor: pointer;
   color: black;
 `;
-const FlashMessage = ({ message, remove }) => (
-  <Container>
-    <p>!!!{message}!!!!</p>
-    <Delete onClick={remove}>x</Delete>
-  </Container>
-);
+const FlashMessage = ({ message, remove }) => {
+  console.log("FLash");
+  return (
+    <Container>
+      <p>!!!{message}!!!!</p>
+      <Delete onClick={remove}>x</Delete>
+    </Container>
+  );
+};
 
 export default FlashMessage;

@@ -2,12 +2,13 @@ import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import Spinner from "../components/common/Spinner";
 import { connect } from "react-redux";
+import Layout from "../components/layout/Layout";
 import FlashMessage from "../components/layout/FlashMessage";
 import Header from "../components/layout/Header";
 import getTodaysDate from "../utils/getTodaysDate";
 import ButtonNav from "../components/buttons/ButtonNav";
 import Navbar from "../components/layout/Navbar/Navbar";
-import Graph from "../components/charts/Graph";
+import DisplayGraph from "../components/charts/DisplayGraph";
 import NavHistory from "../components/layout/NavHistory";
 import { getDailyChart, updateTodaysData } from "../redux/actions/chartActions";
 import {
@@ -21,26 +22,6 @@ import {
 import { logoutUser } from "../redux/actions/authActions";
 
 class MainPage extends PureComponent {
-  state = {
-    flash: ""
-  };
-
-  onLogoutClick = e => {
-    let message = "Logout has been disabled";
-    this.setState({ flash: message });
-    return;
-    // e && e.preventDefault();
-    // const { hoursToday } = this.props.timer;
-    // if (hoursToday > 0) {
-    //   this.props.logHours(hoursToday);
-    // }
-    // ["hoursToday", "startTime", "dateToday"].forEach(i =>
-    //   localStorage.removeItem(i)
-    // );
-    // console.log("should be logging out");
-    // this.props.logoutUser();
-  };
-
   handleStartClick = e => {
     let dateToday =
       localStorage.getItem("dateToday") ||
@@ -82,11 +63,6 @@ class MainPage extends PureComponent {
     localStorage.setItem("startTime", 0);
 
     this.props.logHours(hoursToday + addedHours, dateToday);
-  };
-
-  removeFlashMessage = e => {
-    e.preventDefault();
-    this.setState({ flash: "" });
   };
 
   getDataFromLocal = () => {
@@ -180,37 +156,22 @@ class MainPage extends PureComponent {
       }
     };
     return (
-      <div>
-        <div className="main">
-          <Navbar onLogoutClick={this.onLogoutClick} auth={this.props.auth} />
-          {this.state.flash && (
-            <FlashMessage
-              message={this.state.flash}
-              remove={this.removeFlashMessage}
-            />
-          )}
-          <Header />
-          <ButtonNav
-            actions={actions}
-            startDisabled={start}
-            stopDisabled={stop}
-            resetDisabled={reset}
-            logDisabled={log}
-            startTimer={this.handleStartClick}
-            stopTimer={this.handleStopClick}
-            resetTimer={this.handleResetClick}
-            logHours={this.handleLogClick}
-          />
-          <NavHistory chartType={chartType} />
-          {loading || typeof data === "undefined" ? (
-            <Spinner />
-          ) : (
-            <div className="chart">
-              <Graph chartType={chartType} data={data} />
-            </div>
-          )}
-        </div>
-      </div>
+      <Layout auth={this.props.auth}>
+        <Header />
+        <ButtonNav
+          actions={actions}
+          startDisabled={start}
+          stopDisabled={stop}
+          resetDisabled={reset}
+          logDisabled={log}
+        />
+        <NavHistory chartType={chartType} />
+        {loading || typeof data === "undefined" ? (
+          <Spinner />
+        ) : (
+          <DisplayGraph chartType={chartType} data={data} />
+        )}
+      </Layout>
     );
   }
 }

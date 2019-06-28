@@ -1,14 +1,14 @@
 import React from "react";
 import { configure, shallow } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
-import Navbar from "../../../layout/Navbar/Navbar";
-import User from "../../../layout/Navbar/userItem/User";
-import Brand from "../../../layout/Navbar/brand/Brand";
+import Navbar from "../../../components/layout/Navbar/Navbar";
+import User from "../../../components/layout/Navbar/userItem/User";
+import Brand from "../../../components/layout/Navbar/brand/Brand";
 
-import GuestLinks from "../../../layout/Navbar/auth/GuestLinks";
-import AuthLinks from "../../../layout/Navbar/auth/AuthLinks";
-import Toggle from "../../../layout/Navbar/toggleScreen/Toggle";
-import FlashMessage from "../../../layout/FlashMessage";
+import GuestLinks from "../../../components/layout/Navbar/auth/GuestLinks";
+import AuthLinks from "../../../components/layout/Navbar/auth/AuthLinks";
+import Toggle from "../../../components/layout/Navbar/toggleScreen/Toggle";
+import FlashMessage from "../../../components/layout/FlashMessage";
 configure({ adapter: new Adapter() });
 
 describe("<Navbar />", () => {
