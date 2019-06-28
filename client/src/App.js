@@ -12,7 +12,6 @@ import Landing from "./components/layout/Landing";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import PrivateRoute from "./components/common/PrivateRoute";
-import Footer from "./components/layout/Footer";
 
 // Check for token
 if (localStorage.jwtTokenHoursTracker) {
@@ -35,17 +34,12 @@ if (localStorage.jwtTokenHoursTracker) {
 // }
 const App = () => (
   <Provider store={store}>
-    <div className="App">
-      <div className="app-content">
-        <Route exact path="/" component={Landing} />
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/register" component={Register} />
-        <Switch>
-          <PrivateRoute exact path="/dashboard" component={MainPage} />
-        </Switch>
-      </div>
-      <Footer />
-    </div>
+    <Route exact path="/" component={Landing} />
+    <Route exact path="/login" component={Login} />
+    <Route exact path="/register" component={Register} />
+    <Switch>
+      <PrivateRoute exact path="/dashboard" component={MainPage} />
+    </Switch>
   </Provider>
 );
 
