@@ -47,7 +47,7 @@ export default (state = initialState, action) => {
         }
       };
     case UPDATE_TIMER:
-      const { hoursToday, dateToday, startTime, forced } = action.payload;
+      const { hoursToday, startTime, forced } = action.payload;
       let disabled;
       if (forced) {
         disabled = {

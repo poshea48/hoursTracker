@@ -32,11 +32,11 @@ const Button = styled.button`
     width: 8em;
   }
 
-  @media (max-width: 520px) {
+  @media (max-width: 575px) {
     width: 7.5em;
   }
 
-  @media (max-width: 500px) {
+  @media (max-width: 530px) {
     font-size: 90%;
   }
 
