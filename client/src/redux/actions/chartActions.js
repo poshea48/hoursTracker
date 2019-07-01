@@ -13,7 +13,7 @@ export const getDailyChart = (hoursToday, dateToday) => dispatch => {
     })
     .then(res => {
       const dailyData = [...res.data];
-      dailyData[dailyData.length - 1].hours += hoursToday;
+      dailyData[dailyData.length - 1].hours += Number(hoursToday);
       return dispatch({
         type: GET_DAILY,
         payload: res.data

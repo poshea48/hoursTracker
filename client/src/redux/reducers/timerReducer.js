@@ -47,18 +47,15 @@ export default (state = initialState, action) => {
         }
       };
     case UPDATE_TIMER:
-      const today = new Date();
-      const { hoursToday, dateToday, startTime } = action.payload;
+      const { hoursToday, dateToday, startTime, forced } = action.payload;
       let disabled;
-      let forced;
-      if (today.toDateString() !== new Date(dateToday).toDateString()) {
+      if (forced) {
         disabled = {
           start: true,
           stop: true,
           reset: false,
           log: false
         };
-        forced = true;
       } else {
         disabled = {
           start: startTime > 0,
@@ -66,7 +63,6 @@ export default (state = initialState, action) => {
           reset: startTime === 0 && hoursToday === 0,
           log: startTime === 0 && hoursToday === 0
         };
-        forced = false;
       }
       return {
         ...state,

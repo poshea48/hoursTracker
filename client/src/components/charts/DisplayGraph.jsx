@@ -29,7 +29,6 @@ const Graph = styled.div`
 `;
 
 const DisplayGraph = ({ data, chartType }) => {
-  console.log("Display Graph");
   return (
     <Container>
       <GraphWrapper>

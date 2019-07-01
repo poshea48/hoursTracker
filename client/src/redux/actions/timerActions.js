@@ -30,10 +30,11 @@ export const updateTimer = ({
 }) => dispatch => {
   hoursToday = Number(hoursToday);
   startTime = Number(startTime);
-
+  const today = new Date();
+  let forced = today.toDateString() !== new Date(dateToday).toDateString();
   return dispatch({
     type: UPDATE_TIMER,
-    payload: { dateToday, hoursToday, startTime }
+    payload: { dateToday, hoursToday, startTime, forced }
   });
 };
 

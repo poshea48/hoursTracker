@@ -21,6 +21,7 @@ import { logoutUser } from "../redux/actions/authActions";
 
 class MainPage extends PureComponent {
   handleStartClick = e => {
+    e.preventDefault();
     let dateToday =
       localStorage.getItem("dateToday") ||
       this.props.timer.dateToday ||
