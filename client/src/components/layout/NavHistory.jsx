@@ -10,7 +10,6 @@ import "../../css/NavHistory.css";
 
 class NavHistory extends Component {
   handleSelect = e => {
-    console.log(e.target.value);
     if (e.target.value === "weekly") {
       this.props.getWeeklyChart();
     } else if (e.target.value === "monthly") {

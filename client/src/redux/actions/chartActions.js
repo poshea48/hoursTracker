@@ -28,7 +28,6 @@ export const getDailyChart = (hoursToday, dateToday) => dispatch => {
 };
 
 export const updateTodaysData = (data, hoursToday) => dispatch => {
-  console.log(data);
   const newData = [...data];
   newData[newData.length - 1].hours = hoursToday;
   dispatch({

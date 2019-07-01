@@ -19,7 +19,6 @@ const Delete = styled.div`
   color: black;
 `;
 const FlashMessage = ({ message, remove }) => {
-  console.log("FLash");
   return (
     <Container>
       <p>!!!{message}!!!!</p>

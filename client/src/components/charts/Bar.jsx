@@ -10,7 +10,6 @@ class Bar extends Component {
   }
 
   handleMouseHover = () => {
-    console.log("hovering");
     this.setState({ isHovering: !this.state.isHovering });
   };
 

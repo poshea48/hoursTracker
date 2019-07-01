@@ -38,7 +38,6 @@ const Layout = ({ auth, children }) => {
   const removeFlashMessage = () => {
     changeFlash("");
   };
-  console.log("Layout");
   return (
     <Container>
       <Navbar onLogoutClick={onLogoutClick} auth={auth} />

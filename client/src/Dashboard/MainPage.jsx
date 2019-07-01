@@ -85,7 +85,6 @@ class MainPage extends PureComponent {
   };
 
   componentDidMount() {
-    console.log("mounting");
     const localData = this.getDataFromLocal();
 
     this.props.getDailyChart(localData.hoursToday, localData.dateToday);
@@ -99,7 +98,6 @@ class MainPage extends PureComponent {
 
   // Check if hoursToday in timer object changed, if so then update daily chart
   componentDidUpdate(prevProps) {
-    console.log("updating");
     // disabling login/logout
     // if (localStorage.jwtTokenHoursTracker) {
     //   setAuthToken(localStorage.jwtTokenHoursTracker);
@@ -114,7 +112,6 @@ class MainPage extends PureComponent {
 
     if (!this.props.timer.dateToday) {
       const localData = this.getDataFromLocal();
-      console.log(localData);
       this.props.getDailyChart(localData.hoursToday, localData.dateToday);
       return this.props.updateTimer(localData);
     }

@@ -1,3 +1,4 @@
+const compression = require("compression");
 const express = require("express");
 const apiRoute = require("./routes/api/");
 const parser = require("body-parser");
@@ -11,6 +12,9 @@ const fs = require("fs");
 // app.configure('production' => {
 //
 // })
+
+// compress all responses
+app.use(compression());
 
 // middleware telling system
 app.use(parser.urlencoded({ extended: true }));
