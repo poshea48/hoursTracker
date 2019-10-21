@@ -4,6 +4,7 @@ import "../../css/XContent.css";
 
 class XContent extends Component {
   getLabels = (data, chartType) => {
+    if (!Array.isArray(data)) return null;
     return data.map((datum, i) => {
       return (
         <div key={i} className="period">

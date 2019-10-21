@@ -1,40 +1,62 @@
-import { GET_DAILY, GET_WEEKLY, GET_MONTHLY, CHART_LOADING } from '../actions/types'
+import {
+  GET_DAILY,
+  GET_WEEKLY,
+  GET_MONTHLY,
+  CHART_LOADING,
+  GET_ALL_PROJECTS,
+  GET_DAILY_PROJECT
+} from "../actions/types";
 
 const initialState = {
-  chartType: '',
+  chartType: "",
   data: [],
-  loading: false
-}
+  loading: false,
+  project: "total",
+  projects: []
+};
 
 export default (state = initialState, action) => {
-  switch(action.type) {
+  switch (action.type) {
     case CHART_LOADING:
       return {
         ...state,
         loading: true
-      }
+      };
     case GET_DAILY:
       return {
         ...state,
-        chartType: 'daily',
+        chartType: "daily",
         data: action.payload,
         loading: false
-      }
+      };
     case GET_WEEKLY:
       return {
         ...state,
-        chartType: 'weekly',
+        chartType: "weekly",
         data: action.payload,
         loading: false
-      }
+      };
     case GET_MONTHLY:
       return {
         ...state,
-        chartType: 'monthly',
+        chartType: "monthly",
         data: action.payload,
         loading: false
-      }
+      };
+    case GET_ALL_PROJECTS:
+      return {
+        ...state,
+        projects: action.payload
+      };
+    case GET_DAILY_PROJECT:
+      return {
+        ...state,
+        chartType: "daily",
+        data: action.payload,
+        loading: false
+      };
+
     default:
-      return state
+      return state;
   }
-}
+};

@@ -31,6 +31,7 @@
 .label-content {
   width: 95%;
   height: 60px;
+  padding-top: 5px;
   display: flex;
   flex-direction: column;
 }

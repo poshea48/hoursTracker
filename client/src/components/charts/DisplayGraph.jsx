@@ -13,7 +13,7 @@ const Container = styled.div`
 `;
 
 const GraphWrapper = styled.div`
-  width: 80%;
+  width: 100%;
   max-width: 600px;
   display: flex;
   flex-direction: column;

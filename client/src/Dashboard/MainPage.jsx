@@ -7,8 +7,13 @@ import Header from "../components/layout/Header";
 import getTodaysDate from "../utils/getTodaysDate";
 import ButtonNav from "../components/buttons/ButtonNav";
 import DisplayGraph from "../components/charts/DisplayGraph";
-import NavHistory from "../components/layout/NavHistory";
-import { getDailyChart, updateTodaysData } from "../redux/actions/chartActions";
+import ChartNavigation from "../components/chartNavigation/ChartNavigation";
+import {
+  getDailyChart,
+  getWeeklyChart,
+  getMonthlyChart,
+  updateTodaysData
+} from "../redux/actions/chartActions";
 import {
   startTimer,
   stopTimer,
@@ -64,6 +69,18 @@ class MainPage extends PureComponent {
     this.props.logHours(hoursToday + addedHours, dateToday);
   };
 
+  // moved to ChartNavigation component
+  // handleChartSelect = e => {
+  //   if (e.target.value === "weekly") {
+  //     this.props.getWeeklyChart();
+  //   } else if (e.target.value === "monthly") {
+  //     this.props.getMonthlyChart();
+  //   } else {
+  //     const { hoursToday, dateToday } = this.props.timer;
+  //     this.props.getDailyChart(hoursToday, dateToday);
+  //   }
+  // };
+
   getDataFromLocal = () => {
     if (
       !localStorage.getItem("dateToday") ||
@@ -91,25 +108,16 @@ class MainPage extends PureComponent {
     this.props.updateTimer(localData);
 
     // Archive hours
+    // TODO => setup cron job
     if (new Date(localData.dateToday).getDate() === 7) {
       return this.props.timer.archived ? null : this.props.archiveHours();
     }
   }
 
+  // add in shouldComponentUpdate for hoursToday
+
   // Check if hoursToday in timer object changed, if so then update daily chart
   componentDidUpdate(prevProps) {
-    // disabling login/logout
-    // if (localStorage.jwtTokenHoursTracker) {
-    //   setAuthToken(localStorage.jwtTokenHoursTracker);
-    //   const decoded = jwt_decode(localStorage.jwtTokenHoursTracker);
-    //
-    //   // Check for expired token
-    //   const currentTime = Date.now() / 1000;
-    //   if (decoded.exp < currentTime) {
-    //     this.onLogoutClick();
-    //   }
-    // }
-
     if (!this.props.timer.dateToday) {
       const localData = this.getDataFromLocal();
       this.props.getDailyChart(localData.hoursToday, localData.dateToday);
@@ -122,6 +130,12 @@ class MainPage extends PureComponent {
       const { hoursToday, dateToday } = this.props.timer;
       return this.props.getDailyChart(hoursToday, dateToday);
     }
+
+    if (prevProps.project.active && !this.props.project.active) {
+      const { hoursToday, dateToday } = this.props.timer;
+
+      return this.props.getDailyChart(hoursToday, dateToday);
+    }
   }
 
   render() {
@@ -129,6 +143,7 @@ class MainPage extends PureComponent {
     // const currentTime = Date.now() / 1000;
     const { start, stop, reset, log } = this.props.timer.disabled;
     const { chartType, data, loading } = this.props.chart;
+    const { project } = this.props;
     const actions = {
       Start: {
         id: "startId",
@@ -161,7 +176,13 @@ class MainPage extends PureComponent {
           resetDisabled={reset}
           logDisabled={log}
         />
-        <NavHistory chartType={chartType} />
+
+        <ChartNavigation
+          chartType={chartType}
+          project={project.name || "total"}
+          handleSelect={this.handleChartSelect}
+        />
+
         {loading || typeof data === "undefined" ? (
           <Spinner />
         ) : (
@@ -174,6 +195,8 @@ class MainPage extends PureComponent {
 
 MainPage.propTypes = {
   getDailyChart: PropTypes.func.isRequired,
+  getWeeklyChart: PropTypes.func.isRequired,
+  getMonthlyChart: PropTypes.func.isRequired,
   updateTodaysData: PropTypes.func.isRequired,
   updateTimer: PropTypes.func.isRequired,
   startTimer: PropTypes.func.isRequired,
@@ -183,7 +206,8 @@ MainPage.propTypes = {
   archiveHours: PropTypes.func.isRequired,
   logoutUser: PropTypes.func.isRequired,
   chart: PropTypes.object.isRequired,
-  timer: PropTypes.object.isRequired
+  timer: PropTypes.object.isRequired,
+  project: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => {
@@ -191,7 +215,8 @@ const mapStateToProps = state => {
     auth: state.auth,
     chart: state.chart,
     timer: state.timer,
-    errors: state.errors
+    errors: state.errors,
+    project: state.project
   };
 };
 
@@ -199,6 +224,8 @@ export default connect(
   mapStateToProps,
   {
     getDailyChart,
+    getWeeklyChart,
+    getMonthlyChart,
     updateTodaysData,
     startTimer,
     stopTimer,

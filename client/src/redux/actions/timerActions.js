@@ -56,6 +56,7 @@ export const logHours = (hours, date) => dispatch => {
 };
 
 export const archiveHours = () => dispatch => {
+  console.log("archiving...");
   axios
     .post("/api/hours/archive-hours")
     .then(res => {

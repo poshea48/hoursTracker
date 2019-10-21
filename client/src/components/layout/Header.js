@@ -10,12 +10,11 @@ const Container = styled.div`
 const Title = styled.h2`
   font-size: 2em;
   text-align: center;
-  margin-top: 50px;
   margin-bottom: 50px;
-  color: rgba(7, 27, 82, 1);
+  margin-top: 0;
+  color: #343a40;
 
   @media (max-width: 450px) {
-    margin-top: 25px;
     margin-bottom: 25px;
   }
 `;

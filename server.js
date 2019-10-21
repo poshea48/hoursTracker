@@ -16,7 +16,7 @@ const fs = require("fs");
 // compress all responses
 app.use(compression());
 
-// middleware telling system
+// middleware telling system to parse incoming data to url encoded and json
 app.use(parser.urlencoded({ extended: true }));
 app.use(parser.json());
 
