@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
-
 import { connect } from "react-redux";
 import {
   getDailyChart,
@@ -18,7 +17,7 @@ const ChartTypeSelect = ({
   getDailyChart
 }) => {
   const [chart, changeChart] = useState("daily");
-  const project_id = project.active ? project.id : null;
+  // const project_id = project.active ? project.id : null;
 
   const handleChartSelect = e => {
     changeChart(e.target.value);

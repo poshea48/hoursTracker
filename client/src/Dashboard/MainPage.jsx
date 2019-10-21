@@ -69,18 +69,6 @@ class MainPage extends PureComponent {
     this.props.logHours(hoursToday + addedHours, dateToday);
   };
 
-  // moved to ChartNavigation component
-  // handleChartSelect = e => {
-  //   if (e.target.value === "weekly") {
-  //     this.props.getWeeklyChart();
-  //   } else if (e.target.value === "monthly") {
-  //     this.props.getMonthlyChart();
-  //   } else {
-  //     const { hoursToday, dateToday } = this.props.timer;
-  //     this.props.getDailyChart(hoursToday, dateToday);
-  //   }
-  // };
-
   getDataFromLocal = () => {
     if (
       !localStorage.getItem("dateToday") ||
@@ -115,7 +103,6 @@ class MainPage extends PureComponent {
   }
 
   // add in shouldComponentUpdate for hoursToday
-
   // Check if hoursToday in timer object changed, if so then update daily chart
   componentDidUpdate(prevProps) {
     if (!this.props.timer.dateToday) {

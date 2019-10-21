@@ -57,7 +57,7 @@ const ProjectSelect = ({
     // changeSelected(e.target.value);
   };
 
-  const getProjectChart = () => {};
+  // const getProjectChart = () => {};
 
   return (
     <DropDown onChange={handleSelect} value={selected}>

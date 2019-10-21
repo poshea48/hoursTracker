@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import DropDown from "../styles/DropDown";
+import React from "react";
 import styled from "styled-components";
 import ChartTypeSelect from "./ChartTypeSelect";
 import ProjectSelect from "./ProjectSelect";
