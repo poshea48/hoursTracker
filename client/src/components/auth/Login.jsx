@@ -87,6 +87,7 @@ class Login extends Component {
                   type="submit"
                   className="form-button"
                   style={{ marginRight: "1em" }}
+                  value="Submit"
                 />
                 <Link to="/">Cancel</Link>
               </form>

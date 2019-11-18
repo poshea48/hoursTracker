@@ -100,7 +100,7 @@ class Register extends Component {
                   onChange={this.onChange}
                   error={errors.password2}
                 />
-                <input type="submit" className="form-button" />
+                <input type="submit" className="form-button" value="Submit" />
                 <Link to="/">Cancel</Link>
               </form>
             </div>
@@ -123,7 +123,4 @@ const mapStateToProps = state => {
     errors: state.errors
   };
 };
-export default connect(
-  mapStateToProps,
-  { registerUser }
-)(Register);
+export default connect(mapStateToProps, { registerUser })(Register);
