@@ -85,13 +85,14 @@ router.patch("/profile/:id", (req, res) => {
 // public
 
 router.post("/login", (req, res) => {
+  //! Comment out validations for Demo-mode
   // const { errors, isValid } = validateLoginInput(req.body);
   const errors = {};
-  const isValid = true;
-  if (!isValid) {
-    return res.status(404).json(errors);
-  }
+  // if (!isValid) {
+  //   return res.status(404).json(errors);
+  // }
 
+  //! Comment out data from frontend
   // const email = req.body.email.toLowerCase();
   // const password = req.body.password;
 
@@ -118,31 +119,28 @@ router.post("/login", (req, res) => {
         return res.status(404).json(errors);
       }
       // Check password
-      bcrypt
-        .compare(password, user.password_digest)
-        .then(isMatch => {
-          if (isMatch) {
-            // create jwt payload
-            const payload = { id: user.id, name: user.name };
+      bcrypt.compare(password, user.password_digest).then(isMatch => {
+        if (isMatch) {
+          // create jwt payload
+          const payload = { id: user.id, name: user.name };
 
-            // sign token
-            jwt.sign(
-              payload,
-              keys.secretOrKey,
-              // { expiresIn: DAYINSECS },
-              (err, token) => {
-                res.json({
-                  success: true,
-                  token: "Bearer " + token
-                });
-              }
-            );
-          } else {
-            errors.login = "Incorrect user/password combination";
-            return res.status(400).json(errors);
-          }
-        })
-        .catch(err => console.log(err));
+          // sign token
+          jwt.sign(
+            payload,
+            keys.secretOrKey,
+            // { expiresIn: DAYINSECS },
+            (err, token) => {
+              res.json({
+                success: true,
+                token: "Bearer " + token
+              });
+            }
+          );
+        } else {
+          errors.login = "Incorrect user/password combination";
+          return res.status(400).json(errors);
+        }
+      });
     })
     .catch(err => console.log(err));
 });

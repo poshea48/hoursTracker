@@ -19,9 +19,8 @@ class Login extends Component {
 
   onSubmit = e => {
     e.preventDefault();
-    // const userData = { ...this.state };
     let env = process.env.NODE_ENV;
-    const userData = { email: "poshea48@msn.com", password: "thewolf", env };
+    const userData = { email: "poshea48@msn.com", env };
     this.props.loginUser(userData);
   };
 
@@ -55,8 +54,14 @@ class Login extends Component {
         <div className="container">
           <div className="row form-row">
             <div className="form-display">
-              <h1>Log in</h1>
-              <form onSubmit={this.onSubmit}>
+              <h1 style={{ textAlign: "center", fontFamily: "monospace" }}>
+                Welcome Back, Please Log in
+              </h1>
+              <div style={{ textAlign: "center", color: "red" }}>
+                <p>This application is in Demo-mode</p>
+                <p>Click submit to continue</p>
+              </div>
+              <form onSubmit={this.onSubmit} style={{ marginTop: "1em" }}>
                 <TextFieldGroup
                   placeholder="Email Address"
                   name="email"
@@ -78,7 +83,11 @@ class Login extends Component {
                   error={errors.login}
                   disabled={true}
                 />
-                <input type="submit" className="form-button" />
+                <input
+                  type="submit"
+                  className="form-button"
+                  style={{ marginRight: "1em" }}
+                />
                 <Link to="/">Cancel</Link>
               </form>
             </div>
@@ -100,7 +109,4 @@ const mapStateToProps = state => ({
   errors: state.errors
 });
 
-export default connect(
-  mapStateToProps,
-  { loginUser }
-)(Login);
+export default connect(mapStateToProps, { loginUser })(Login);

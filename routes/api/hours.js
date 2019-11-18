@@ -13,9 +13,7 @@ router.get(
       `select series as period,
       coalesce(hrs_worked, 0) as hours from
       generate_series(date_trunc('week', date '${date}'), date '${date}', '1 day'::interval) as series
-      left join logged_work on logged_work.user_id = ${
-        req.user.id
-      } and logged_work.log_day = series group by 1, 2 order by 1`
+      left join logged_work on logged_work.user_id = ${req.user.id} and logged_work.log_day = series group by 1, 2 order by 1`
     )
       .then(data => res.send(data.rows))
       .catch(err => console.log(err));
@@ -68,9 +66,7 @@ router.get(
   (req, res) => {
     const { projectName } = req.query;
     db.raw(
-      `select * from projects where name = '${projectName}' and user_id = ${
-        req.user.id
-      }`
+      `select * from projects where name = '${projectName}' and user_id = ${req.user.id}`
     )
       .then(data => {
         return res.send(data.rows);
@@ -90,11 +86,7 @@ router.get(
       `select series as period,
       coalesce(hrs_worked, 0) as hours from
       generate_series(date_trunc('week', date '${date}'), date '${date}', '1 day'::interval) as series
-      left join project_hours on project_hours.user_id = ${
-        req.user.id
-      } and project_hours.project_id = ${project_id} and user_id = ${
-        req.user.id
-      } and project_hours.log_day = series group by 1, 2 order by 1
+      left join project_hours on project_hours.user_id = ${req.user.id} and project_hours.project_id = ${project_id} and user_id = ${req.user.id} and project_hours.log_day = series group by 1, 2 order by 1
       `
     )
       .then(data => {
@@ -110,9 +102,7 @@ router.get(
   (req, res) => {
     db.raw(
       `select date_trunc('week', log_day) as period, sum(hrs_worked) as hours
-      from logged_work where user_id = ${
-        req.user.id
-      } group by period order by period`
+      from logged_work where user_id = ${req.user.id} group by period order by period`
     )
       .then(data => res.send(data.rows))
       .catch(err => console.log(err));
@@ -127,9 +117,7 @@ router.get(
       `select date_trunc('month', log_day) as period, sum(hrs_worked) as hours
     from logged_work where logged_work.user_id = ${req.user.id} group by 1 union
     select make_date(year::integer, month::integer, 1) as period,
-    hrs_worked as hours from archive_months where archive_months.user_id = ${
-      req.user.id
-    }
+    hrs_worked as hours from archive_months where archive_months.user_id = ${req.user.id}
     order by period desc limit 6`
     )
       .then(data => res.send(data.rows.reverse()))
@@ -193,14 +181,12 @@ router.post(
             )
             .then(() => {
               db.raw(
-                `delete from logged_work where user_id = ${
-                  req.user.id
-                } and extract('month' from log_day) = ${month}`
+                `delete from logged_work where user_id = ${req.user.id} and extract('month' from log_day) = ${month}`
               ).then(() => res.send("success"));
-            })
-            .catch(err => console.log("this is error", err));
+            });
         }
-      });
+      })
+      .catch(err => console.log("this is error", err));
   }
 );
 
@@ -209,9 +195,7 @@ router.delete(
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     db.raw(
-      `delete from archive_months where user_id = ${
-        req.user.id
-      } and year != extract(year from CURRENT_DATE) and month <= 12 - extract(month from CURRENT_DATE)`
+      `delete from archive_months where user_id = ${req.user.id} and year != extract(year from CURRENT_DATE) and month <= 12 - extract(month from CURRENT_DATE)`
     );
   }
 );

@@ -3,6 +3,7 @@ const express = require("express");
 const apiRoute = require("./routes/api/");
 const parser = require("body-parser");
 const app = express();
+const cors = require("cors");
 const passport = require("passport");
 const PORT = process.env.PORT || 8001;
 const https = require("https");
@@ -15,6 +16,7 @@ const fs = require("fs");
 
 // compress all responses
 app.use(compression());
+app.use(cors());
 
 // middleware telling system to parse incoming data to url encoded and json
 app.use(parser.urlencoded({ extended: true }));

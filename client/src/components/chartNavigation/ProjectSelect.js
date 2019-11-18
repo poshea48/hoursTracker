@@ -27,20 +27,23 @@ const ProjectSelect = ({
 
   useEffect(() => {
     getAllProjects();
-  }, []);
+  }, [getAllProjects]);
 
   useEffect(() => {
-    console.log(project);
     if (!project.active) return;
     if (chartType === "daily") {
-      console.log("daily chart for project");
       getDailyChartForProject(project);
     }
-  }, [project.name, project.active]);
+  }, [
+    project.name,
+    project.active,
+    project,
+    chartType,
+    getDailyChartForProject
+  ]);
 
   const handleSelect = async e => {
     if (e.target.value === "create-project") {
-      console.log("project create form");
       changeSelected("total");
       removeProject();
       return;
@@ -83,7 +86,9 @@ const mapStateToProps = ({ chart, project }) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  { getAllProjects, getDailyChartForProject, getProject, removeProject }
-)(ProjectSelect);
+export default connect(mapStateToProps, {
+  getAllProjects,
+  getDailyChartForProject,
+  getProject,
+  removeProject
+})(ProjectSelect);
