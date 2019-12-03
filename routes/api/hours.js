@@ -21,82 +21,6 @@ router.get(
 );
 
 router.get(
-  "/projects",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    db.select()
-      .from("projects")
-      .where({ user_id: req.user.id })
-      .then(data => {
-        return res.send(data.map(p => p.name));
-      })
-      .catch(err => console.log(err));
-  }
-);
-
-// create a new project
-router.post(
-  `/add_project`,
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    let errors;
-    db.select()
-      .from("projects")
-      .where({ user_id: req.user.id, name: req.body.project_name })
-      .then(data => {
-        if (data.length === 0) {
-          db("projects")
-            .insert({
-              user_id: req.user.id,
-              name: req.body.project_name
-            })
-            .then(data => res.send(data));
-        } else {
-          errors.email = "Project already exists";
-          return response.status(400).json(errors);
-        }
-      })
-      .catch(err => console.log(err));
-  }
-);
-
-router.get(
-  "/project/details",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    const { projectName } = req.query;
-    db.raw(
-      `select * from projects where name = '${projectName}' and user_id = ${req.user.id}`
-    )
-      .then(data => {
-        return res.send(data.rows);
-      })
-      .catch(err => console.log(err));
-  }
-);
-
-// get hours daily from a specific project
-router.get(
-  `/project/daily/:id`,
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    let date = req.query.today;
-    let project_id = req.params.id;
-    db.raw(
-      `select series as period,
-      coalesce(hrs_worked, 0) as hours from
-      generate_series(date_trunc('week', date '${date}'), date '${date}', '1 day'::interval) as series
-      left join project_hours on project_hours.user_id = ${req.user.id} and project_hours.project_id = ${project_id} and user_id = ${req.user.id} and project_hours.log_day = series group by 1, 2 order by 1
-      `
-    )
-      .then(data => {
-        return res.send(data.rows);
-      })
-      .catch(err => console.log(err));
-  }
-);
-
-router.get(
   "/weekly",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
@@ -197,6 +121,87 @@ router.delete(
     db.raw(
       `delete from archive_months where user_id = ${req.user.id} and year != extract(year from CURRENT_DATE) and month <= 12 - extract(month from CURRENT_DATE)`
     );
+  }
+);
+
+// API FOR PROJECTS
+
+router.get(
+  "/projects",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    db.select()
+      .from("projects")
+      .where({ user_id: req.user.id })
+      .then(data => {
+        return res.send(data.map(p => p.name));
+      })
+      .catch(err => console.log("Error in /projects:", err));
+  }
+);
+
+// create a new project
+router.post(
+  `/add_project`,
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    let errors;
+    db.select()
+      .from("projects")
+      .where({ user_id: req.user.id, name: req.body.projectName })
+      .then(data => {
+        if (data.length === 0) {
+          db("projects")
+            .returning("name")
+            .insert({
+              user_id: req.user.id,
+              name: req.body.projectName
+            })
+            .then(result => {
+              return res.send(result[0]);
+            });
+        } else {
+          errors.project = "Project already exists";
+          return response.status(400).json(errors);
+        }
+      })
+      .catch(err => console.log(err));
+  }
+);
+
+router.get(
+  "/project/details",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const { projectName } = req.query;
+    db.raw(
+      `select * from projects where name = '${projectName}' and user_id = ${req.user.id}`
+    )
+      .then(data => {
+        return res.send(data.rows);
+      })
+      .catch(err => console.log(err));
+  }
+);
+
+// get hours daily from a specific project
+router.get(
+  `/project/daily/:id`,
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    let date = req.query.today;
+    let project_id = req.params.id;
+    db.raw(
+      `select series as period,
+      coalesce(hrs_worked, 0) as hours from
+      generate_series(date_trunc('week', date '${date}'), date '${date}', '1 day'::interval) as series
+      left join project_hours on project_hours.user_id = ${req.user.id} and project_hours.project_id = ${project_id} and user_id = ${req.user.id} and project_hours.log_day = series group by 1, 2 order by 1
+      `
+    )
+      .then(data => {
+        return res.send(data.rows);
+      })
+      .catch(err => console.log(err));
   }
 );
 

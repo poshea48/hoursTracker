@@ -4,6 +4,7 @@ import {
   GET_MONTHLY,
   CHART_LOADING,
   GET_ALL_PROJECTS,
+  ADD_PROJECT,
   GET_DAILY_PROJECT
 } from "../actions/types";
 
@@ -47,6 +48,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         projects: action.payload
+      };
+    case ADD_PROJECT:
+      return {
+        ...state,
+        projects: [...state.projects, action.payload]
       };
     case GET_DAILY_PROJECT:
       return {

@@ -8,6 +8,7 @@ import store from "./redux/store";
 
 import "./css/App.css";
 import MainPage from "./Dashboard/MainPage";
+import Dashboard from "./components/Dashboard";
 import Landing from "./components/layout/Landing";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
@@ -38,7 +39,7 @@ const App = () => (
     <Route exact path="/login" component={Login} />
     <Route exact path="/register" component={Register} />
     <Switch>
-      <PrivateRoute exact path="/dashboard" component={MainPage} />
+      <PrivateRoute exact path="/dashboard" component={Dashboard} />
     </Switch>
   </Provider>
 );

@@ -29,10 +29,6 @@ const DropDown = styled.select`
     outline: none;
   }
 
-  &:last-child {
-    margin-left: 0.6em;
-  }
-
   option {
     font-weight: normal;
   }

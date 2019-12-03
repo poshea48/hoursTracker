@@ -1,7 +1,7 @@
-import React, { PureComponent } from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
-import Spinner from "../components/common/Spinner";
 import { connect } from "react-redux";
+import Spinner from "../components/common/Spinner";
 import Layout from "../components/layout/Layout";
 import Header from "../components/layout/Header";
 import getTodaysDate from "../utils/getTodaysDate";
@@ -25,8 +25,57 @@ import {
 } from "../redux/actions/timerActions";
 import { logoutUser } from "../redux/actions/authActions";
 
-class MainPage extends PureComponent {
-  getDataFromLocal = () => {
+const Dashboard = ({
+  auth,
+  timer,
+  chart,
+  project,
+  errors,
+  getDailyChart,
+  updateTimer,
+  getAllProjects,
+  archiveHours
+}) => {
+  // const decoded = jwt_decode(localStorage.jwtTokenHoursTracker);
+  // const currentTime = Date.now() / 1000;
+  const { hoursToday, dateToday } = timer;
+  const { chartType, data, loading } = chart;
+
+  // componentDidMount
+  useEffect(() => {
+    const localData = getDataFromLocal();
+    getDailyChart(localData.hoursToday, localData.dateToday);
+    updateTimer(localData);
+    getAllProjects();
+
+    // Archive hours
+    // TODO => setup cron job
+    if (new Date(localData.dateToday).getDate() === 7) {
+      return timer.archived ? null : archiveHours();
+    }
+  }, []);
+
+  // componentDidUpdate
+  useEffect(() => {
+    if (chartType === "daily") {
+      getDailyChart(hoursToday, dateToday);
+    }
+  }, [hoursToday]);
+
+  useEffect(() => {
+    if (!dateToday) {
+      const localData = getDataFromLocal();
+      getDailyChart(localData.hoursToday, localData.dateToday);
+      updateTimer(localData);
+    }
+  }, [dateToday]);
+
+  useEffect(() => {
+    // if proctive.active => get chart for project
+    // else getDailyChart
+  }, [project.active]);
+
+  const getDataFromLocal = () => {
     if (
       !localStorage.getItem("dateToday") ||
       localStorage.getItem("dateToday") === ""
@@ -46,68 +95,26 @@ class MainPage extends PureComponent {
     return { dateToday, hoursToday, startTime };
   };
 
-  async componentDidMount() {
-    const localData = this.getDataFromLocal();
-    await this.props.getDailyChart(localData.hoursToday, localData.dateToday);
-    await this.props.updateTimer(localData);
-    this.props.getAllProjects();
+  return (
+    <Layout auth={auth}>
+      <Header />
+      <ButtonNav />
 
-    // Archive hours
-    // TODO => setup cron job
-    if (new Date(localData.dateToday).getDate() === 7) {
-      return this.props.timer.archived ? null : this.props.archiveHours();
-    }
-  }
+      <ChartNavigation
+        chartType={chartType}
+        project={project.name || "total"}
+      />
 
-  // add in shouldComponentUpdate for hoursToday
-  // Check if hoursToday in timer object changed, if so then update daily chart
-  componentDidUpdate(prevProps) {
-    if (!this.props.timer.dateToday) {
-      const localData = this.getDataFromLocal();
-      this.props.getDailyChart(localData.hoursToday, localData.dateToday);
-      return this.props.updateTimer(localData);
-    }
-    if (
-      prevProps.timer.hoursToday !== this.props.timer.hoursToday &&
-      this.props.chart.chartType === "daily"
-    ) {
-      const { hoursToday, dateToday } = this.props.timer;
-      return this.props.getDailyChart(hoursToday, dateToday);
-    }
+      {loading || typeof data === "undefined" ? (
+        <Spinner />
+      ) : (
+        <DisplayGraph chartType={chartType} data={data} />
+      )}
+    </Layout>
+  );
+};
 
-    if (prevProps.project.active && !this.props.project.active) {
-      const { hoursToday, dateToday } = this.props.timer;
-
-      return this.props.getDailyChart(hoursToday, dateToday);
-    }
-  }
-
-  render() {
-    // const decoded = jwt_decode(localStorage.jwtTokenHoursTracker);
-    // const currentTime = Date.now() / 1000;
-    const { chartType, data, loading } = this.props.chart;
-    const { project } = this.props;
-    return (
-      <Layout auth={this.props.auth}>
-        <Header />
-        <ButtonNav />
-
-        <ChartNavigation
-          chartType={chartType}
-          project={project.name || "total"}
-        />
-
-        {loading || typeof data === "undefined" ? (
-          <Spinner />
-        ) : (
-          <DisplayGraph chartType={chartType} data={data} />
-        )}
-      </Layout>
-    );
-  }
-}
-
-MainPage.propTypes = {
+Dashboard.propTypes = {
   getDailyChart: PropTypes.func.isRequired,
   getWeeklyChart: PropTypes.func.isRequired,
   getMonthlyChart: PropTypes.func.isRequired,
@@ -148,4 +155,4 @@ export default connect(mapStateToProps, {
   updateTimer,
   logoutUser,
   archiveHours
-})(MainPage);
+})(Dashboard);

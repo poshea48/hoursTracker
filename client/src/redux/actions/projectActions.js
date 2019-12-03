@@ -23,21 +23,9 @@ export const removeProject = () => dispatch => {
   });
 };
 
-// export const getDailyChartForProject = (
-//   hoursToday,
-//   dateToday,
-//   project
-// ) => dispatch => {
-//   dispatch(setChartLoading());
-//   const date = getDateForDb(dateToday);
-//   axios
-//     .get(`/api/hours/${project.id}/daily`, { params: { today: date } })
-//     .then(res => {
-//       const dailyData = [...res.data];
-//       dailyData[dailyData.length - 1].hours += Number(hoursToday);
-//       return dispatch({
-//         type: GET_DAILY_PROJECT,
-//         payload: res.data
-//       });
-//     });
+// export const changeProject = projectName => dispatch => {
+//   return dispatch({
+//     type: CHANGE_PROJECT,
+//     payload: projectName
+//   });
 // };

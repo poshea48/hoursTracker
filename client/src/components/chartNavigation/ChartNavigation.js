@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import ChartTypeSelect from "./ChartTypeSelect";
-import ProjectSelect from "./ProjectSelect";
+import ProjectSelect from "../projects/ProjectSelect";
 
 const Nav = styled.div`
   display: flex;
@@ -29,7 +29,7 @@ const SelectItems = styled.div`
   display: flex;
   justify-content: space-between;
 
-  @media (max-width: 550px) {
+  @media (max-width: 600px) {
     flex-direction: column;
   }
 `;

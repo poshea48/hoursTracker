@@ -3,6 +3,7 @@ import {
   GET_DAILY,
   GET_WEEKLY,
   GET_MONTHLY,
+  ADD_PROJECT,
   CHART_LOADING,
   GET_ALL_PROJECTS,
   GET_DAILY_PROJECT
@@ -10,7 +11,9 @@ import {
 import getDateForDb from "../../utils/getDateForDb";
 
 export const getDailyChart = (hoursToday, dateToday) => dispatch => {
+  if (!hoursToday) hoursToday = 0;
   dispatch(setChartLoading());
+
   const date = getDateForDb(dateToday);
   axios
     .get(`/api/hours/daily`, {
@@ -86,6 +89,7 @@ const setChartLoading = () => {
 };
 
 export const getDailyChartForProject = project => dispatch => {
+  console.log("inside getDailyChartForProject");
   dispatch(setChartLoading());
   const { id, hoursToday, dateToday } = project;
   axios
@@ -118,26 +122,19 @@ export const getAllProjects = () => dispatch => {
     );
 };
 
-// export const changeProject = projectName => dispatch => {
-//   return dispatch({
-//     type: CHANGE_PROJECT,
-//     payload: projectName
-//   });
-// };
-
-// const addProject = projectData => dispatch => {
-//   axios
-//     .post("/api/hours/add_project", projectData)
-//     .then(res =>
-//       dispatch({
-//         type: GET_PROJECT,
-//         payload: res.data
-//       })
-//     )
-//     .catch(err =>
-//       dispatch({
-//         type: GET_PROJECT,
-//         payload: null
-//       })
-//     );
-// };
+export const addProject = projectData => dispatch => {
+  axios
+    .post("/api/hours/add_project", projectData)
+    .then(res => {
+      return dispatch({
+        type: ADD_PROJECT,
+        payload: res.data
+      });
+    })
+    .catch(err =>
+      dispatch({
+        type: ADD_PROJECT,
+        payload: []
+      })
+    );
+};

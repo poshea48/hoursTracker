@@ -23,19 +23,17 @@ export const stopTimer = hoursToday => dispatch => {
   });
 };
 
-export const updateTimer = ({
-  hoursToday,
-  dateToday,
-  startTime
-}) => dispatch => {
-  hoursToday = Number(hoursToday);
-  startTime = Number(startTime);
-  const today = new Date();
-  let forced = today.toDateString() !== new Date(dateToday).toDateString();
-  return dispatch({
-    type: UPDATE_TIMER,
-    payload: { dateToday, hoursToday, startTime, forced }
-  });
+export const updateTimer = ({ hoursToday, dateToday, startTime }) => {
+  return dispatch => {
+    hoursToday = Number(hoursToday);
+    startTime = Number(startTime);
+    const today = new Date();
+    let forced = today.toDateString() !== new Date(dateToday).toDateString();
+    return dispatch({
+      type: UPDATE_TIMER,
+      payload: { dateToday, hoursToday, startTime, forced }
+    });
+  };
 };
 
 export const resetTimer = () => dispatch => {

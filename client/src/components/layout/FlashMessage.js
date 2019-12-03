@@ -3,7 +3,9 @@ import styled from "styled-components";
 
 const Container = styled.div`
   display: flex;
-  position: relative;
+  position: fixed;
+  top: 50px;
+  left: 0;
   justify-content: center;
   width: 100%;
   background-color: red;
