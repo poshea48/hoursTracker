@@ -8,11 +8,9 @@ let sample = {
 };
 
 bcrypt.genSalt(10, (err, salt) => {
-  [paul, abigail, sample].forEach(user => {
-    bcrypt.hash(user.password_digest, salt, (err, hash) => {
-      if (err) throw err;
-      user.password_digest = hash;
-    });
+  bcrypt.hash(sample.password_digest, salt, (err, hash) => {
+    if (err) throw err;
+    sample.password_digest = hash;
   });
 });
 
