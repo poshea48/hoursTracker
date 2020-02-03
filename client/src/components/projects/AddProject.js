@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-
-const Container = styled.form`
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  span {
+    color: #e7040f;
+    font-size: 10px;
+  }
+`;
+const InputWrapper = styled.form`
   display: flex;
   justify-content: space-between;
   z-index: 10;
@@ -50,6 +57,7 @@ const Container = styled.form`
 `;
 const AddProject = ({ add }) => {
   const [project, changeProject] = useState("");
+  const inDemo = process.env.NODE_ENV === "production";
 
   const handleChange = e => {
     changeProject(e.target.value);
@@ -57,7 +65,8 @@ const AddProject = ({ add }) => {
 
   const submitChange = e => {
     e.preventDefault();
-    if (project.match(/[^a-zA-Z0-9'-]+/g)) {
+    if (!project) return;
+    if (project.match(/[^a-zA-Z0-9'-\s]+/g)) {
       changeProject("Invalid Characters");
       return;
     }
@@ -67,17 +76,21 @@ const AddProject = ({ add }) => {
   };
 
   return (
-    <Container onSubmit={submitChange}>
-      <input
-        onChange={handleChange}
-        placeholder="Project"
-        name="projectName"
-        value={project}
-        required
-      />
-      <button type="submit" className="add">
-        +
-      </button>
+    <Container>
+      {inDemo && <span>Disabled in demo mode</span>}
+      <InputWrapper onSubmit={submitChange}>
+        <input
+          onChange={handleChange}
+          placeholder="Project"
+          name="projectName"
+          value={project}
+          required
+          disabled={inDemo}
+        />
+        <button type="submit" className="add" disabled={inDemo}>
+          +
+        </button>
+      </InputWrapper>
     </Container>
   );
 };
