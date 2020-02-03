@@ -34,11 +34,13 @@ const Dashboard = ({
   timer,
   chart,
   project,
+
   errors,
   getDailyChart,
   getDailyChartForProject,
   getWeeklyChartForProject,
   getMonthlyChartForProject,
+  getAllProjects,
   updateTimer,
   archiveHours
 }) => {
@@ -81,6 +83,11 @@ const Dashboard = ({
   };
 
   useEffect(() => {
+    console.log("getting all projects");
+    getAllProjects();
+  }, [getAllProjects]);
+
+  useEffect(() => {
     if (dateToday) {
       getDailyChart(hoursToday, dateToday);
     } else {
@@ -104,8 +111,7 @@ const Dashboard = ({
     project.id,
     hoursToday,
     dateToday,
-    getDailyChart,
-    getDailyChartForProject
+    chartType
   ]);
 
   const getProjectChart = (project, chartType) => {

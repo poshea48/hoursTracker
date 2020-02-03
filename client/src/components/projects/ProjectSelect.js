@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import {
-  getAllProjects,
   getDailyChartForProject,
   addProject
 } from "../../redux/actions/chartActions";
@@ -40,14 +39,6 @@ const ProjectSelect = ({
       {p}
     </option>
   ));
-
-  useEffect(() => {
-    getAllProjects();
-  }, [getAllProjects]);
-
-  useEffect(() => {
-    changeToggle(false);
-  }, []);
 
   const handleSelect = e => {
     if (e.target.value === "create-project") {
@@ -92,7 +83,6 @@ const ProjectSelect = ({
 };
 
 ProjectSelect.propTypes = {
-  getAllProjects: PropTypes.func.isRequired,
   addProject: PropTypes.func.isRequired,
 
   getDailyChartForProject: PropTypes.func.isRequired,
@@ -109,7 +99,6 @@ const mapStateToProps = ({ chart, project }) => {
 };
 
 export default connect(mapStateToProps, {
-  getAllProjects,
   addProject,
   getDailyChartForProject,
   getProject,
