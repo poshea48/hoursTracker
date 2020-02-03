@@ -26,15 +26,13 @@ const Overlay = styled.div`
 
 const ProjectSelect = ({
   projects,
-  project,
   chartType,
   getAllProjects,
-  getDailyChartForProject,
   getProject,
   removeProject,
   addProject
 }) => {
-  const [selected, changeSelected] = useState("total");
+  const [selected, changeSelected] = useState(chartType || "total");
   const [toggleAddProject, changeToggle] = useState(false);
 
   let displayProjects = projects.map(p => (
@@ -44,17 +42,14 @@ const ProjectSelect = ({
   ));
 
   useEffect(() => {
+    getAllProjects();
+  }, [getAllProjects]);
+
+  useEffect(() => {
     changeToggle(false);
   }, []);
 
-  useEffect(() => {
-    if (!project.active) return;
-    if (chartType === "daily") {
-      getDailyChartForProject(project);
-    }
-  }, [project.active]);
-
-  const handleSelect = async e => {
+  const handleSelect = e => {
     if (e.target.value === "create-project") {
       changeToggle(true);
       return;
@@ -65,8 +60,7 @@ const ProjectSelect = ({
       removeProject();
     } else {
       changeSelected(e.target.value);
-
-      await getProject(e.target.value);
+      getProject(e.target.value);
     }
   };
 
@@ -80,13 +74,14 @@ const ProjectSelect = ({
     getAllProjects();
   };
 
-  if (toggleAddProject)
+  if (toggleAddProject) {
     return (
       <>
         <AddProject add={add} />
         <Overlay onClick={removeInput} />
       </>
     );
+  }
   return (
     <DropDown onChange={handleSelect} value={selected}>
       <option value="total">Total Hours</option>

@@ -10,7 +10,7 @@ const StartButton = ({ start, dateToday, startDisabled }) => {
     let startTime = new Date().getTime();
     localStorage.setItem("startTime", startTime);
     localStorage.setItem("dateToday", today);
-    start(startTime);
+    start(startTime, dateToday);
   };
   return (
     <ActionButton onClick={handleStartClick} disabled={startDisabled}>

@@ -6,14 +6,17 @@ import {
   ADD_PROJECT,
   CHART_LOADING,
   GET_ALL_PROJECTS,
-  GET_DAILY_PROJECT
+  GET_DAILY_PROJECT,
+  GET_WEEKLY_PROJECT,
+  GET_MONTHLY_PROJECT
 } from "./types";
 import getDateForDb from "../../utils/getDateForDb";
+import getTodaysDate from "../../utils/getTodaysDate";
 
 export const getDailyChart = (hoursToday, dateToday) => dispatch => {
   if (!hoursToday) hoursToday = 0;
   dispatch(setChartLoading());
-
+  if (!dateToday) dateToday = getTodaysDate();
   const date = getDateForDb(dateToday);
   axios
     .get(`/api/hours/daily`, {
@@ -26,7 +29,7 @@ export const getDailyChart = (hoursToday, dateToday) => dispatch => {
       dailyData[dailyData.length - 1].hours += Number(hoursToday);
       return dispatch({
         type: GET_DAILY,
-        payload: res.data
+        payload: dailyData
       });
     })
     .catch(err =>
@@ -88,21 +91,67 @@ const setChartLoading = () => {
   };
 };
 
-export const getDailyChartForProject = project => dispatch => {
+// need project id, and non-logged hours, dateToday
+export const getDailyChartForProject = (
+  projectId,
+  loggedHours,
+  dateToday
+) => dispatch => {
   console.log("inside getDailyChartForProject");
+  const date = getDateForDb(dateToday);
   dispatch(setChartLoading());
-  const { id, hoursToday, dateToday } = project;
   axios
-    .get(`/api/hours/project/daily/${id}`, { params: { today: dateToday } })
+    .get(`/api/hours/project/daily/${projectId}`, { params: { today: date } })
     .then(res => {
       const dailyData = [...res.data];
-      dailyData[dailyData.length - 1].hours += Number(hoursToday);
+      dailyData[dailyData.length - 1].hours_today += Number(loggedHours);
+
       return dispatch({
         type: GET_DAILY_PROJECT,
-        payload: res.data
+        payload: dailyData
       });
     })
     .catch(err => console.log("error in getDailyChartForProject"));
+};
+
+export const getWeeklyChartForProject = (projectId, dateToday) => dispatch => {
+  const date = getDateForDb(dateToday);
+  dispatch(setChartLoading());
+
+  axios
+    .get(`/api/hours/project/weekly/${projectId}`, { params: { today: date } })
+    .then(res => {
+      return dispatch({
+        type: GET_WEEKLY_PROJECT,
+        payload: res.data
+      });
+    })
+    .catch(err =>
+      dispatch({
+        type: GET_WEEKLY_PROJECT,
+        payload: "Could not find Chart"
+      })
+    );
+};
+
+export const getMonthlyChartForProject = (projectId, dateToday) => dispatch => {
+  const date = getDateForDb(dateToday);
+
+  dispatch(setChartLoading());
+  axios
+    .get(`/api/hours/project/monthly/${projectId}`, { params: { today: date } })
+    .then(res => {
+      return dispatch({
+        type: GET_MONTHLY_PROJECT,
+        payload: res.data
+      });
+    })
+    .catch(err =>
+      dispatch({
+        type: GET_MONTHLY_PROJECT,
+        payload: null
+      })
+    );
 };
 
 export const getAllProjects = () => dispatch => {

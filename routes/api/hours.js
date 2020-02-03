@@ -26,7 +26,7 @@ router.get(
   (req, res) => {
     db.raw(
       `select date_trunc('week', log_day) as period, sum(hrs_worked) as hours
-      from logged_work where user_id = ${req.user.id} group by period order by period`
+      from logged_work where log_day >= now() - interval '1 month' and user_id = ${req.user.id} group by period order by period`
     )
       .then(data => res.send(data.rows))
       .catch(err => console.log(err));
@@ -186,20 +186,94 @@ router.get(
 
 // get hours daily from a specific project
 router.get(
-  `/project/daily/:id`,
+  `/project/daily/:projectId`,
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     let date = req.query.today;
-    let project_id = req.params.id;
+    let project_id = req.params.projectId;
+    let user_id = req.user.id;
     db.raw(
       `select series as period,
       coalesce(hrs_worked, 0) as hours from
       generate_series(date_trunc('week', date '${date}'), date '${date}', '1 day'::interval) as series
-      left join project_hours on project_hours.user_id = ${req.user.id} and project_hours.project_id = ${project_id} and user_id = ${req.user.id} and project_hours.log_day = series group by 1, 2 order by 1
+      left join project_hours on project_hours.user_id = ${user_id} and project_hours.project_id = ${project_id} and user_id = ${user_id} and project_hours.log_day = series group by 1, 2 order by 1
       `
     )
       .then(data => {
         return res.send(data.rows);
+      })
+      .catch(err => console.log(err));
+  }
+);
+
+router.get(
+  `/project/weekly/:projectId`,
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    let project_id = req.params.projectId;
+    let user_id = req.user.id;
+    db.raw(
+      `select date_trunc('week', log_day) as period, sum(hrs_worked) as hours
+      from project_hours where log_day >= now() - interval '1 month' and project_id = ${project_id} and user_id = ${user_id} group by period order by period`
+    )
+      .then(data => res.send(data.rows))
+      .catch(err => console.log(err));
+  }
+);
+
+router.get(
+  `/project/monthly/:projectId`,
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    let date = req.query.today;
+    let project_id = req.params.projectId;
+    let user_id = req.user.id;
+    db.raw(
+      `select date_trunc('month', log_day) as period, sum(hrs_worked) as hours
+    from project_hours where log_day >= now() - interval '6 months' and user_id = ${user_id} and project_id = ${project_id} group by 1 order by period desc limit 6`
+    )
+      .then(data => res.send(data.rows.reverse()))
+      .catch(err => console.log(err));
+  }
+);
+
+router.post(
+  `/project/log-hours/`,
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    db.select()
+      .from("project_hours")
+      .where({
+        log_day: req.body.date,
+        user_id: req.user.id,
+        project_id: req.body.projectId
+      })
+      .then(data => {
+        if (data.length === 0) {
+          db("project_hours")
+            .insert({
+              user_id: req.user.id,
+              project_id: req.body.projectId,
+              log_day: req.body.date,
+              hrs_worked: req.body.hours
+            })
+            .then(data => res.send(data));
+        } else {
+          db("project_hours")
+            .where({
+              log_day: req.body.date,
+              user_id: req.user.id,
+              project_id: req.body.projectId
+            })
+            .update({ hrs_worked: db.raw(`hrs_worked + ${req.body.hours}`) })
+            .then(data => res.json(data));
+        }
+      })
+      .then(data => {
+        db("projects")
+          .where({ id: req.body.projectId })
+          .update({ total_hrs: db.raw(`total_hrs + ${req.body.hours}`) })
+          .then(data => res.json(data));
       })
       .catch(err => console.log(err));
   }

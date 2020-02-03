@@ -8,10 +8,15 @@ export const getProject = projectName => dispatch => {
     .then(res => {
       let projectData = res.data[0];
       projectData.dateToday = getDateForDb();
-
       return dispatch({
         type: GET_PROJECT,
-        payload: res.data[0]
+        payload: {
+          active: true,
+          id: projectData.id,
+          name: projectData.name,
+          totalHours: projectData.total_hrs,
+          hoursToday: projectData.hours_today
+        }
       });
     })
     .catch(err => console.log(err));

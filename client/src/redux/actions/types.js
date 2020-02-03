@@ -6,13 +6,17 @@ export const GET_DAILY = "GET_DAILY";
 export const GET_WEEKLY = "GET_WEEKLY";
 export const GET_MONTHLY = "GET_MONTHLY";
 export const GET_DAILY_PROJECT = "GET_DAILY_PROJECT";
-
+export const GET_WEEKLY_PROJECT = "GET_WEEKLY_PROJECT";
+export const GET_MONTHLY_PROJECT = "GET_MONTHLY_PROJECT";
 export const GET_PROJECT = "GET_PROJECT";
 export const REMOVE_PROJECT = "REMOVE_PROJECT";
 
 export const START_TIMER = "START_TIMER";
+export const START_PROJECT_TIMER = "START_PROJECT_TIMER";
 export const STOP_TIMER = "STOP_TIMER";
+export const STOP_PROJECT_TIMER = "STOP_PROJECT_TIMER";
 export const RESET_TIMER = "RESET_TIMER";
+export const RESET_PROJECT = "RESET_PROJECT";
 export const LOG_HOURS = "LOG_HOURS";
 export const UPDATE_TIMER = "UPDATE_TIMER";
 

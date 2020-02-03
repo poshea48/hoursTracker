@@ -5,7 +5,9 @@ import {
   CHART_LOADING,
   GET_ALL_PROJECTS,
   ADD_PROJECT,
-  GET_DAILY_PROJECT
+  GET_DAILY_PROJECT,
+  GET_WEEKLY_PROJECT,
+  GET_MONTHLY_PROJECT
 } from "../actions/types";
 
 const initialState = {
@@ -61,7 +63,20 @@ export default (state = initialState, action) => {
         data: action.payload,
         loading: false
       };
-
+    case GET_WEEKLY_PROJECT:
+      return {
+        ...state,
+        chartType: "weekly",
+        data: action.payload,
+        loading: false
+      };
+    case GET_MONTHLY_PROJECT:
+      return {
+        ...state,
+        chartType: "monthly",
+        data: action.payload,
+        loading: false
+      };
     default:
       return state;
   }

@@ -7,7 +7,6 @@ const DropDown = styled.select`
   font-family: sans-serif;
   font-weight: 700;
   padding: 0.4em 0.8em 0.4em 0.4em;
-  width: 110px;
   border: 1px solid black;
   box-sizing: border-box;
   background: inherit;

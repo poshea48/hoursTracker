@@ -1,4 +1,4 @@
-import React, { useState, memo } from "react";
+import React, { memo } from "react";
 import Navbar from "./Navbar/Navbar";
 import Footer from "./Footer";
 import styled from "styled-components";

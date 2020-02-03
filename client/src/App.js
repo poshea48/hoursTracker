@@ -7,7 +7,6 @@ import { Provider } from "react-redux";
 import store from "./redux/store";
 
 import "./css/App.css";
-import MainPage from "./Dashboard/MainPage";
 import Dashboard from "./components/Dashboard";
 import Landing from "./components/layout/Landing";
 import Login from "./components/auth/Login";

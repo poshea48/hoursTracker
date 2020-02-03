@@ -4,9 +4,8 @@ const initialState = {
   active: false,
   id: null,
   name: "",
-  startTime: 0,
-  hoursToday: 0,
-  dateToday: null
+  totalHours: 0,
+  hoursToday: 0
 };
 
 export default (state = initialState, action) => {
@@ -15,7 +14,6 @@ export default (state = initialState, action) => {
     case GET_PROJECT:
       return {
         ...state,
-        active: true,
         ...payload
       };
     case REMOVE_PROJECT:

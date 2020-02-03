@@ -46,4 +46,29 @@ const ActionButton = styled.button`
   }
 `;
 
+const ProjectButton = styled(ActionButton)`
+  padding: 0.3em;
+  margin: 0 0.5em;
+  font-size: 14px;
+  width: 8em;
+  @media (max-width: 670px) {
+    width: 8em;
+  }
+
+  @media (max-width: 575px) {
+    width: 8em;
+  }
+
+  @media (max-width: 530px) {
+    font-size: 100%;
+  }
+
+  @media (max-width: 450px) {
+    align-self: center;
+    font-size: 100%;
+    width: 8em;
+  }
+`;
+
 export default ActionButton;
+export { ProjectButton };

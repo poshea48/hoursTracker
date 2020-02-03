@@ -8,12 +8,16 @@ import getTodaysDate from "../utils/getTodaysDate";
 import ButtonNav from "../components/buttons/ButtonNav";
 import DisplayGraph from "../components/charts/DisplayGraph";
 import ChartNavigation from "../components/chartNavigation/ChartNavigation";
+import ProjectDisplay from "./projects/ProjectDisplay";
 import {
   getDailyChart,
   getWeeklyChart,
   getMonthlyChart,
+  getDailyChartForProject,
   updateTodaysData,
-  getAllProjects
+  getAllProjects,
+  getWeeklyChartForProject,
+  getMonthlyChartForProject
 } from "../redux/actions/chartActions";
 import {
   startTimer,
@@ -32,49 +36,16 @@ const Dashboard = ({
   project,
   errors,
   getDailyChart,
+  getDailyChartForProject,
+  getWeeklyChartForProject,
+  getMonthlyChartForProject,
   updateTimer,
-  getAllProjects,
   archiveHours
 }) => {
   // const decoded = jwt_decode(localStorage.jwtTokenHoursTracker);
   // const currentTime = Date.now() / 1000;
   const { hoursToday, dateToday } = timer;
   const { chartType, data, loading } = chart;
-
-  // componentDidMount
-  useEffect(() => {
-    const localData = getDataFromLocal();
-    getDailyChart(localData.hoursToday, localData.dateToday);
-    updateTimer(localData);
-    getAllProjects();
-
-    // Archive hours
-    // TODO => setup cron job
-    if (new Date(localData.dateToday).getDate() === 7) {
-      return timer.archived ? null : archiveHours();
-    }
-  }, []);
-
-  // componentDidUpdate
-  useEffect(() => {
-    if (chartType === "daily") {
-      getDailyChart(hoursToday, dateToday);
-    }
-  }, [hoursToday]);
-
-  useEffect(() => {
-    if (!dateToday) {
-      const localData = getDataFromLocal();
-      getDailyChart(localData.hoursToday, localData.dateToday);
-      updateTimer(localData);
-    }
-  }, [dateToday]);
-
-  useEffect(() => {
-    // if proctive.active => get chart for project
-    // else getDailyChart
-  }, [project.active]);
-
   const getDataFromLocal = () => {
     if (
       !localStorage.getItem("dateToday") ||
@@ -90,25 +61,104 @@ const Dashboard = ({
     if (!localStorage.getItem("startTime")) {
       localStorage.setItem("startTime", "0");
     }
-    const { dateToday, hoursToday, startTime } = localStorage;
+    const {
+      dateToday,
+      hoursToday,
+      startTime,
+      projectHoursToday,
+      projectId,
+      projectStartTime
+    } = localStorage;
 
-    return { dateToday, hoursToday, startTime };
+    return {
+      dateToday,
+      hoursToday,
+      startTime,
+      projectHoursToday,
+      projectId,
+      projectStartTime
+    };
+  };
+
+  useEffect(() => {
+    if (dateToday) {
+      getDailyChart(hoursToday, dateToday);
+    } else {
+      const localData = getDataFromLocal();
+      getDailyChart(localData.hoursToday, localData.dateToday);
+      updateTimer(localData);
+    }
+  }, [hoursToday, dateToday, getDailyChart, updateTimer]);
+
+  // if project is selected project.active will become true,
+  // then grab project details (from project (logged hours) and timer/project (non-logged hours))
+  useEffect(() => {
+    if (project.active) {
+      getProjectChart(project, chartType);
+    } else {
+      getTotalHoursChart(chartType || "daily", hoursToday, dateToday);
+    }
+  }, [
+    project.active,
+    project.hoursToday,
+    project.id,
+    hoursToday,
+    dateToday,
+    getDailyChart,
+    getDailyChartForProject
+  ]);
+
+  const getProjectChart = (project, chartType) => {
+    switch (chartType) {
+      case "daily":
+        const loggedHours = project.hoursToday;
+        getDailyChartForProject(project.id, loggedHours, dateToday);
+        return;
+      case "weekly":
+        getWeeklyChartForProject(project.id, dateToday);
+        return;
+      case "monthly":
+        getMonthlyChartForProject(project.id, dateToday);
+        return;
+      default:
+        throw new Error(`Unknown chart type ${chartType}`);
+    }
+  };
+
+  const getTotalHoursChart = (chartType, hoursToday, dateToday) => {
+    switch (chartType) {
+      case "daily":
+        getDailyChart(hoursToday, dateToday);
+        return;
+      case "weekly":
+        getWeeklyChart();
+        return;
+      case "monthly":
+        getMonthlyChart();
+        return;
+      default:
+        throw new Error(`Unknown chart type ${chartType}`);
+    }
   };
 
   return (
     <Layout auth={auth}>
       <Header />
       <ButtonNav />
-
       <ChartNavigation
         chartType={chartType}
-        project={project.name || "total"}
+        projectName={project.name || "total"}
       />
-
       {loading || typeof data === "undefined" ? (
         <Spinner />
       ) : (
         <DisplayGraph chartType={chartType} data={data} />
+      )}
+      {project.active && (
+        <ProjectDisplay
+          projectName={project.name}
+          projectHours={project.totalHours}
+        />
       )}
     </Layout>
   );
@@ -119,6 +169,9 @@ Dashboard.propTypes = {
   getWeeklyChart: PropTypes.func.isRequired,
   getMonthlyChart: PropTypes.func.isRequired,
   getAllProjects: PropTypes.func.isRequired,
+  getDailyChartForProject: PropTypes.func.isRequired,
+  getWeeklyChartForProject: PropTypes.func.isRequired,
+  getMonthlyChartForProject: PropTypes.func.isRequired,
   updateTodaysData: PropTypes.func.isRequired,
   updateTimer: PropTypes.func.isRequired,
   startTimer: PropTypes.func.isRequired,
@@ -147,6 +200,9 @@ export default connect(mapStateToProps, {
   getWeeklyChart,
   getMonthlyChart,
   getAllProjects,
+  getDailyChartForProject,
+  getWeeklyChartForProject,
+  getMonthlyChartForProject,
   updateTodaysData,
   startTimer,
   stopTimer,

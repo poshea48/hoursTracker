@@ -4,7 +4,10 @@ import { connect } from "react-redux";
 import {
   getDailyChart,
   getWeeklyChart,
-  getMonthlyChart
+  getMonthlyChart,
+  getDailyChartForProject,
+  getWeeklyChartForProject,
+  getMonthlyChartForProject
 } from "../../redux/actions/chartActions";
 import DropDown from "../styles/DropDown";
 
@@ -12,11 +15,15 @@ const ChartTypeSelect = ({
   project,
   hoursToday,
   dateToday,
+  chartType,
   getWeeklyChart,
   getMonthlyChart,
-  getDailyChart
+  getDailyChart,
+  getDailyChartForProject,
+  getWeeklyChartForProject,
+  getMonthlyChartForProject
 }) => {
-  const [chart, changeChart] = useState("daily");
+  const [chart, changeChart] = useState(chartType || "daily");
   // const project_id = project.active ? project.id : null;
 
   const handleChartSelect = e => {
@@ -35,13 +42,14 @@ const ChartTypeSelect = ({
   };
 
   const getProjectChart = chartType => {
-    // if (chartType === "weekly") {
-    //   getWeeklyChartForProject(project.id);
-    // } else if (chartType === "monthly") {
-    //   getMonthlyChartForProject(project.id);
-    // } else {
-    //   getDailyChartForProject(project.hoursToday, project.dateToday);
-    // }
+    if (chartType === "weekly") {
+      getWeeklyChartForProject(project.id, dateToday);
+    } else if (chartType === "monthly") {
+      getMonthlyChartForProject(project.id, dateToday);
+    } else {
+      const loggedHours = project.hoursToday;
+      getDailyChartForProject(project.id, loggedHours, dateToday);
+    }
   };
 
   return (
@@ -56,18 +64,26 @@ const ChartTypeSelect = ({
 ChartTypeSelect.propTypes = {
   getDailyChart: PropTypes.func.isRequired,
   getWeeklyChart: PropTypes.func.isRequired,
-  getMonthlyChart: PropTypes.func.isRequired
+  getMonthlyChart: PropTypes.func.isRequired,
+  getDailyChartForProject: PropTypes.func.isRequired,
+  getWeeklyChartForProject: PropTypes.func.isRequired,
+  getMonthlyChartForProject: PropTypes.func.isRequired
 };
 
-const mapStateToProps = ({ timer, project }) => {
+const mapStateToProps = ({ timer, project, chart }) => {
   return {
     hoursToday: timer.hoursToday,
     dateToday: timer.dateToday,
+    chartType: chart.chartType,
     project
   };
 };
 
-export default connect(
-  mapStateToProps,
-  { getDailyChart, getWeeklyChart, getMonthlyChart }
-)(ChartTypeSelect);
+export default connect(mapStateToProps, {
+  getDailyChart,
+  getWeeklyChart,
+  getMonthlyChart,
+  getDailyChartForProject,
+  getWeeklyChartForProject,
+  getMonthlyChartForProject
+})(ChartTypeSelect);

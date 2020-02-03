@@ -57,6 +57,11 @@ const AddProject = ({ add }) => {
 
   const submitChange = e => {
     e.preventDefault();
+    if (project.match(/[^a-zA-Z0-9'-]+/g)) {
+      changeProject("Invalid Characters");
+      return;
+    }
+
     const projectData = { projectName: project };
     add(projectData);
   };
@@ -68,6 +73,7 @@ const AddProject = ({ add }) => {
         placeholder="Project"
         name="projectName"
         value={project}
+        required
       />
       <button type="submit" className="add">
         +

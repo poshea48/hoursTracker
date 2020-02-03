@@ -12,6 +12,12 @@ const Container = styled.div`
   justify-content: center;
   border-radius: 5px;
   box-shadow: -5px 10px 8px rgba(0, 0, 0, 0.42);
+  span {
+    margin-top: 5em;
+    text-transform: uppercase;
+    font-weight: 900;
+    color: #e7040f;
+  }
 `;
 const HorizontalLines = styled.div`
   position: absolute;
@@ -76,7 +82,11 @@ const BarsDisplay = ({ data, chartType }) => {
         <Line />
         <Line />
       </HorizontalLines>
-      {renderBars(data, chartType)}
+      {data.length === 0 ? (
+        <span>No Data Avaliable</span>
+      ) : (
+        renderBars(data, chartType)
+      )}
     </Container>
   );
 };

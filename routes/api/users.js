@@ -108,7 +108,6 @@ router.post("/login", (req, res) => {
     email = "sample@email.com";
     password = "sample";
   }
-
   db.select()
     .from("users")
     .where({ email: email })

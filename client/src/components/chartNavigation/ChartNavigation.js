@@ -28,15 +28,17 @@ const Title = styled.h2`
 const SelectItems = styled.div`
   display: flex;
   justify-content: space-between;
+  width: 250px;
 
   @media (max-width: 600px) {
     flex-direction: column;
+    width: 150px;
   }
 `;
 
-const ChartNavigation = ({ project }) => {
+const ChartNavigation = ({ projectName }) => {
   const header =
-    project === "total" ? "Total Hours" : project.replace(/[-_]/, " ");
+    projectName === "total" ? "Total Hours" : projectName.replace(/[-_]/, " ");
   return (
     <Nav>
       <Title>{header}</Title>
