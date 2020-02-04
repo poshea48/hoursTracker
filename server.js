@@ -1,3 +1,4 @@
+require("dotenv").config();
 const compression = require("compression");
 const express = require("express");
 const apiRoute = require("./routes/api/");
@@ -47,6 +48,14 @@ if (process.env.NODE_ENV === "production") {
     res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
   });
 }
+
+app.use((req, res, next) => {
+  res.cookie({
+    sameSite: "strict"
+  });
+  console.log(res);
+  next();
+});
 
 app.listen(PORT, () => {
   console.log(`App is up and running. Listening on port ${PORT}`);

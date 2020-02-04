@@ -101,12 +101,11 @@ router.post("/login", (req, res) => {
   let email;
   let password;
   if (req.body.env === "development") {
-    const user = require("../../devLogin");
-    email = user.email;
-    password = user.password;
+    email = process.env.DEV_EMAIL;
+    password = process.env.DEV_PASS;
   } else {
-    email = "sample@email.com";
-    password = "sample";
+    email = process.env.PROD_EMAIL;
+    password = process.env.PROD_PASS;
   }
   db.select()
     .from("users")
