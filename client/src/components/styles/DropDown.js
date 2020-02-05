@@ -3,7 +3,7 @@ import styled from "styled-components";
 const DropDown = styled.select`
   display: block;
   border: none !important;
-  font-size: 14px;
+  font-size: 16px;
   font-family: sans-serif;
   font-weight: 700;
   padding: 0.4em 0.8em 0.4em 0.4em;
