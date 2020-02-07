@@ -2,9 +2,9 @@ import axios from "axios";
 import { GET_PROJECT, REMOVE_PROJECT } from "./types";
 import getDateForDb from "../../utils/getDateForDb";
 
-export const getProject = projectName => dispatch => {
+export const getProject = projectId => dispatch => {
   axios
-    .get("/api/hours/project/details", { params: { projectName } })
+    .get("/api/hours/project/details", { params: { projectId } })
     .then(res => {
       let projectData = res.data[0];
       projectData.dateToday = getDateForDb();
@@ -14,8 +14,8 @@ export const getProject = projectName => dispatch => {
           active: true,
           id: projectData.id,
           name: projectData.name,
-          totalHours: projectData.total_hrs,
-          hoursToday: projectData.hours_today
+          totalHours: parseFloat(projectData.total_hrs.toFixed(1)),
+          hoursToday: parseFloat(projectData.hours_today.toFixed(2))
         }
       });
     })

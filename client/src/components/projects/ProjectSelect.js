@@ -34,11 +34,13 @@ const ProjectSelect = ({
   const [selected, changeSelected] = useState(chartType || "total");
   const [toggleAddProject, changeToggle] = useState(false);
 
-  let displayProjects = projects.map(p => (
-    <option key={p} value={p}>
-      {p}
-    </option>
-  ));
+  let displayProjects = projects.map(p => {
+    return (
+      <option key={p.projectId} value={p.name} data-id={p.projectId}>
+        {p.name}
+      </option>
+    );
+  });
 
   const handleSelect = e => {
     if (e.target.value === "create-project") {
@@ -50,8 +52,9 @@ const ProjectSelect = ({
 
       removeProject();
     } else {
+      const project = e.target.options[e.target.selectedIndex];
       changeSelected(e.target.value);
-      getProject(e.target.value);
+      getProject(project.dataset.id);
     }
   };
 

@@ -134,7 +134,14 @@ router.get(
       .from("projects")
       .where({ user_id: req.user.id })
       .then(data => {
-        return res.send(data.map(p => p.name));
+        return res.send(
+          data.map(p => {
+            return {
+              name: p.name,
+              projectId: p.id
+            };
+          })
+        );
       })
       .catch(err => console.log("Error in /projects:", err));
   }
@@ -173,9 +180,10 @@ router.get(
   "/project/details",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    const { projectName } = req.query;
+    const { projectId } = req.query;
+
     db.raw(
-      `select * from projects where name = '${projectName}' and user_id = ${req.user.id}`
+      `select *, (select sum(hrs_worked) as total_hrs from project_hours where project_id = ${projectId}) from projects where id = '${projectId}' and user_id = ${req.user.id}`
     )
       .then(data => {
         return res.send(data.rows);

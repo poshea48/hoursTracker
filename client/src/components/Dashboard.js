@@ -34,7 +34,6 @@ const Dashboard = ({
   timer,
   chart,
   project,
-
   errors,
   getDailyChart,
   getDailyChartForProject,
