@@ -94,6 +94,12 @@ const ButtonNav = ({
         <ResetButton reset={resetTimer} resetDisabled={resetDisabled} />
         <LogButton
           log={logHours}
+          logProject={{
+            hours: projectTimer.hoursToday,
+            id: projectTimer.id,
+            projectStartTime: projectTimer.startTime,
+            logProjectHours: logProjectHours
+          }}
           hoursToday={hoursToday}
           startTimer={startTime}
           dateToday={dateToday}

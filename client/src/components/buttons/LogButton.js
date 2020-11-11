@@ -1,7 +1,15 @@
 import React from "react";
 import ActionButton from "../styles/ActionButton";
+import { logProjectFunc } from "./LogProjectButton";
 
-const LogButton = ({ log, startTime, dateToday, hoursToday, logDisabled }) => {
+const LogButton = ({
+  log,
+  startTime,
+  dateToday,
+  hoursToday,
+  logDisabled,
+  logProject
+}) => {
   const handleLogClick = () => {
     let addedHours = 0;
     if (startTime > 0) {
@@ -12,6 +20,10 @@ const LogButton = ({ log, startTime, dateToday, hoursToday, logDisabled }) => {
     localStorage.setItem("startTime", 0);
 
     log(hoursToday + addedHours, dateToday);
+    if (logProject.hours > 0) {
+      const { hours, id, projectStartTime, logProjectHours } = logProject;
+      logProjectFunc(id, hours, projectStartTime, logProjectHours, dateToday);
+    }
   };
   return (
     <ActionButton onClick={handleLogClick} disabled={logDisabled}>

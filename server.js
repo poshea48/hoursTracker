@@ -7,13 +7,6 @@ const app = express();
 const cors = require("cors");
 const passport = require("passport");
 const PORT = process.env.PORT || 8001;
-const https = require("https");
-const fs = require("fs");
-
-// HTTPS Redirect for node on heroku
-// app.configure('production' => {
-//
-// })
 
 // compress all responses
 app.use(compression());
@@ -51,9 +44,8 @@ if (process.env.NODE_ENV === "production") {
 
 app.use((req, res, next) => {
   res.cookie({
-    sameSite: "strict"
+    sameSite: "strict",
   });
-  console.log(res);
   next();
 });
 

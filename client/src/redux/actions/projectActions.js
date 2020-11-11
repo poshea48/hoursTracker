@@ -8,14 +8,20 @@ export const getProject = projectId => dispatch => {
     .then(res => {
       let projectData = res.data[0];
       projectData.dateToday = getDateForDb();
+      const totalHours = projectData.total_hrs
+        ? parseFloat(projectData.total_hrs.toFixed(1))
+        : 0;
+      const hoursToday = projectData.hours_today
+        ? parseFloat(projectData.hours_today.toFixed(2))
+        : 0;
       return dispatch({
         type: GET_PROJECT,
         payload: {
           active: true,
           id: projectData.id,
           name: projectData.name,
-          totalHours: parseFloat(projectData.total_hrs.toFixed(1)),
-          hoursToday: parseFloat(projectData.hours_today.toFixed(2))
+          totalHours,
+          hoursToday
         }
       });
     })
